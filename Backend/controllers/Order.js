@@ -1,31 +1,61 @@
-const mongoose = require("mongoose");
-
-const Cutomer = require("../models/Cutomer")
 const Order = require("../models/Order");
+const Product = require("../models/Product");
+const Customer = require("../models/Customer");
 
 
 // ****************************Create Order******************************
+// products will be array of objects
 exports.createOrder = async (req, res) => {
     try {
-        const { orderPrice, customer, type, product } = req.body;
+        const { orderPrice, customerId , type, products } = req.body;
 
-        if (!orderPrice || !customer || !type || !product) {
+        if (!orderPrice || !customerId || !type || !products ) {
             return res.status(400).json({ success: false, message: "provide all information." });
         }
 
-        // store into DB
+        // is customer exsist
+        const isCustomerExsist = await Customer.findById( customerId );
+
+        if( !isCustomerExsist ){
+            return res.status(400).json({success : false , message : "There is no such cutomer"});
+        }
+
+        // create an array to store products IDs
+        const productIds = [];
+
+        // Iterate through the products and insert each one into DB
+        products.forEach( async product => {
+            const { productName , quantity , price } = product;
+            
+            const productDoc = await Product({
+                productName,
+                quantity,
+                price
+            });
+
+            productIds.push( productDoc._id );
+        });
+
+
+        // store order into DB
         const orderDoc = await Order.create({
-            product,
+            products : productIds,
             orderPrice,
-            customer,
+            customer : customerId,
             type
         });
+
+        // store orderid into cutomer
+        const customerDoc = await Customer.findByIdAndUpdate( customerId , {
+            $push : { orders : orderDoc._id },
+        } , {new : true });
 
 
         return res.status(200).json({
             success: true,
             message: "Order is created",
-            orderDoc
+            orderDoc,
+            customerDoc
         });
 
     } catch (error) {
@@ -59,11 +89,18 @@ exports.deleteOrder = async (req, res) => {
         // Delete order from DB
         const orderDoc = await Order.findByIdAndDelete(id);
 
+        // update customer
+        const customerDoc = await Customer.findByIdAndUpdate( orderDoc.customer , {
+            $pull : { orders : orderDoc._id },
+        },{ new : true });
+
+
 
         return res.status(200).json({
             success: true,
             message: "Order is created",
-            orderDoc
+            orderDoc,
+            customerDoc
         });
 
     } catch (error) {
@@ -82,7 +119,7 @@ exports.deleteOrder = async (req, res) => {
 exports.getAllBuyOrders = async (req, res) => {
     try {
         
-        const allBuyOrders = await Order.find( { type : "buy" });
+        const allBuyOrders = await Order.find( { type : "buy" }).populate("products").exec();
 
 
         return res.status(200).json({
@@ -107,7 +144,7 @@ exports.getAllBuyOrders = async (req, res) => {
 exports.getAllSellOrders = async (req, res) => {
     try {
         
-        const allSellOrders = await Order.find( { type : "sell" });
+        const allSellOrders = await Order.find( { type : "sell" }).populate("products").exec();
 
 
         return res.status(200).json({
@@ -128,22 +165,20 @@ exports.getAllSellOrders = async (req, res) => {
 
 
 
-// ****************************Get All Orders of Specific Seller******************************
+// ****************************Get All Orders of Specific Customer******************************
 exports.getCutomerAllOrders = async (req, res) => {
     try {
         const { id } = req.body;
 
-        const objectId = mongoose.Types.ObjectId(id);
-
-        const cutomerDoc = await Cutomer.findById( id );
+        const customerDoc = await Customer.findById( id );
         
-        const customerAllOrders = await Order.find( { customer : objectId });
+        const customerAllOrders = await Order.find( { customer : customerDoc._id }).populate( "products" ).exec();
 
 
         return res.status(200).json({
             success: true,
             message: "Successfully getting all  customer All Orders",
-            cutomerDoc,
+            customerDoc,
             customerAllOrders
         });
 
@@ -158,28 +193,4 @@ exports.getCutomerAllOrders = async (req, res) => {
 }; 
 
 
-// ****************************Get All Orders of Specific Product******************************
-exports.getCutomerAllOrders = async (req, res) => {
-    try {
-        const { id } = req.body;
-
-        const objectId = mongoose.Types.ObjectId(id);
-
-        const customerAllOrders = await Order.find( { customer : objectId });
-
-
-        return res.status(200).json({
-            success: true,
-            message: "Successfully getting all  customer All Orders",
-            customerAllOrders
-        });
-
-    } catch (error) {
-        console.log(error, "Error in get customerAllOrders controller");
-        return res.status(400).json({
-            success: false,
-            message: "Failed to  getting all orders realted to specific cutomer orders",
-            error: error.message
-        })
-    }
-};
+// To Do : ****************************Get All Orders of Specific Product******************************

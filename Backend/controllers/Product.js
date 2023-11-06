@@ -4,7 +4,7 @@ const Product = require("../models/Product")
 // **********************create Product***************************
 exports.createProduct = async( req , res )=>{
     try {
-        const { productName , quantity , buyPrice , sellPrice , description } = req.body;
+        const { productName , quantity , price  } = req.body;
 
         if( !productName ){
             return res.status(400).json({ success : false , message : "Provide product name"});
@@ -21,9 +21,7 @@ exports.createProduct = async( req , res )=>{
         const productDoc = await Product.create({
             productName,
             quantity,
-            buyPrice,
-            sellPrice,
-            description
+            price,
         });
 
         return res.status(200).json({
@@ -47,7 +45,7 @@ exports.createProduct = async( req , res )=>{
 // **********************update Product***************************
 exports.updateProduct = async( req , res )=>{
     try {
-        const { id , productName , quantity , buyPrice , sellPrice , description } = req.body;
+        const { id , productName , quantity , price  } = req.body;
 
         if( !id ){
             return res.status(400).json({ success : false , message : "Provide product id"});
@@ -65,9 +63,7 @@ exports.updateProduct = async( req , res )=>{
             $set : {
                 productName,
                 quantity,
-                buyPrice,
-                sellPrice,
-                description
+                price
             }
         },{ new : true });
 

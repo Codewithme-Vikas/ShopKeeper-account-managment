@@ -6,11 +6,12 @@ const User = require("../models/Admin");
 
 
 // ******************************singup ****************************************
+// Email will be primary key
 exports.singup = async (req, res) => {
     try {
         const { name , email , address , phone , accountType , password , password2 } = req.body;
 
-        if( !name || !accountType || !email || !password ){
+        if( !name || !accountType || !email || !password || !password2 ){
             return res.status(400).json({ success : false , message : "Please provide all required information!" });
         }
 
@@ -54,6 +55,7 @@ exports.singup = async (req, res) => {
         })
     }
 }
+
 
 // ******************************singup ****************************************
 exports.login = async (req, res) => {

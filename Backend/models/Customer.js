@@ -13,11 +13,8 @@ const customerSchema = new mongoose.Schema({
 
     accountType : { type : String , enum : [ "Buyer" , "Seller" ] , require : true },
 
-    credit : { type : Number },
-
-    debit : { type : Number },
-
-    // orders : [ { type : mongoose.Schema.Types.ObjectId , ref : "Order" } ],
+    
+    orders : [ { type : mongoose.Schema.Types.ObjectId , ref : "Order" } ],
 
 },{
     timestamps : true ,
