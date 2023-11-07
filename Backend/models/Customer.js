@@ -15,6 +15,8 @@ const customerSchema = new mongoose.Schema({
 
     
     orders : [ { type : mongoose.Schema.Types.ObjectId , ref : "Order" } ],
+    
+    payments : [ { type : mongoose.Schema.Types.ObjectId , ref : "Payment" } ],
 
 },{
     timestamps : true ,

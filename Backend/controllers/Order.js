@@ -1,15 +1,16 @@
 const Order = require("../models/Order");
 const Product = require("../models/Product");
 const Customer = require("../models/Customer");
+const Payment = require("../models/Payment");
 
 
 // ****************************Create Order******************************
 // products will be array of objects
 exports.createOrder = async (req, res) => {
     try {
-        const { orderPrice, customerId , type, products } = req.body;
+        const { orderPrice, customerId , type, products , payAmount } = req.body;
 
-        if (!orderPrice || !customerId || !type || !products ) {
+        if (!orderPrice || !customerId || !type || !products || payAmount < 0 ) {
             return res.status(400).json({ success: false, message: "provide all information." });
         }
 
@@ -45,9 +46,21 @@ exports.createOrder = async (req, res) => {
             type
         });
 
-        // store orderid into cutomer
+        // create amount
+        let paymentDoc;
+        if( payAmount !== 0 ){
+            paymentDoc = await Payment.create({
+                customer : customerId,
+                amount : payAmount
+            });
+        }
+
+        // store orderId into cutomer
         const customerDoc = await Customer.findByIdAndUpdate( customerId , {
-            $push : { orders : orderDoc._id },
+            $push : { 
+                orders : orderDoc._id,
+                payments : paymentDoc._id,
+            },
         } , {new : true });
 
 

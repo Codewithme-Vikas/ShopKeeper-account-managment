@@ -5,6 +5,7 @@ const router = express.Router();
 
 // import controller
 const { createOrder, getAllBuyOrders, deleteOrder, getAllSellOrders, getCutomerAllOrders }  = require("../controllers/Order");
+const { payment } = require("../controllers/Payment");
 
 
 // **********************************Order APIS************************************************
@@ -21,7 +22,12 @@ router.post("/delete" , deleteOrder );
 
 // -----------------------------------------------------------------------------------------
 
+// *********************************Payment APIs********************************************
 
+router.post("/payment" , payment );
+
+
+// -----------------------------------------------------------------------------------------
 
 
 
