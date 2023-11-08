@@ -5,63 +5,49 @@ const Payment = require("../models/Payment");
 
 
 // ****************************Create Order******************************
-// products will be array of objects
+// products will be array of objects ( objects contain prodcut id and quantity )
 exports.createOrder = async (req, res) => {
     try {
-        const { orderPrice, customerId , type, products , payAmount } = req.body;
+        const { customerId, type, products, orderPrice, payAmount, discount = 0 } = req.body;
 
-        if (!orderPrice || !customerId || !type || !products || payAmount < 0 ) {
+        if (!orderPrice || !customerId || !type || !products || payAmount < 0) {
             return res.status(400).json({ success: false, message: "provide all information." });
         }
 
         // is customer exsist
-        const isCustomerExsist = await Customer.findById( customerId );
+        const isCustomerExsist = await Customer.findById(customerId);
 
-        if( !isCustomerExsist ){
-            return res.status(400).json({success : false , message : "There is no such cutomer"});
+        if (!isCustomerExsist) {
+            return res.status(400).json({ success: false, message: "There is no such cutomer" });
         }
-
-        // create an array to store products IDs
-        const productIds = [];
-
-        // Iterate through the products and insert each one into DB
-        products.forEach( async product => {
-            const { productName , quantity , price } = product;
-            
-            const productDoc = await Product({
-                productName,
-                quantity,
-                price
-            });
-
-            productIds.push( productDoc._id );
-        });
 
 
         // store order into DB
+        const orderPriceAfterDiscount = orderPrice - discount;
+
         const orderDoc = await Order.create({
-            products : productIds,
-            orderPrice,
-            customer : customerId,
+            products: products,
+            orderPrice: orderPriceAfterDiscount,
+            customer: customerId,
             type
         });
 
         // create amount
         let paymentDoc;
-        if( payAmount !== 0 ){
+        if (payAmount !== 0) {
             paymentDoc = await Payment.create({
-                customer : customerId,
-                amount : payAmount
+                customer: customerId,
+                amount: payAmount
             });
         }
 
         // store orderId into cutomer
-        const customerDoc = await Customer.findByIdAndUpdate( customerId , {
-            $push : { 
-                orders : orderDoc._id,
-                payments : paymentDoc._id,
+        const customerDoc = await Customer.findByIdAndUpdate(customerId, {
+            $push: {
+                orders: orderDoc._id,
+                payments: paymentDoc._id,
             },
-        } , {new : true });
+        }, { new: true });
 
 
         return res.status(200).json({
@@ -93,19 +79,19 @@ exports.deleteOrder = async (req, res) => {
         }
 
         // Is order exits
-        const isOrderExists = await Order.findById( id );
+        const isOrderExists = await Order.findById(id);
 
-        if( !isOrderExists ){
-            return res.status(400).json({ success : false , message : "Order is not exists"});
+        if (!isOrderExists) {
+            return res.status(400).json({ success: false, message: "Order is not exists" });
         }
 
         // Delete order from DB
         const orderDoc = await Order.findByIdAndDelete(id);
 
         // update customer
-        const customerDoc = await Customer.findByIdAndUpdate( orderDoc.customer , {
-            $pull : { orders : orderDoc._id },
-        },{ new : true });
+        const customerDoc = await Customer.findByIdAndUpdate(orderDoc.customer, {
+            $pull: { orders: orderDoc._id },
+        }, { new: true });
 
 
 
@@ -131,8 +117,8 @@ exports.deleteOrder = async (req, res) => {
 // ****************************Get All buying Orders******************************
 exports.getAllBuyOrders = async (req, res) => {
     try {
-        
-        const allBuyOrders = await Order.find( { type : "buy" }).populate("products").exec();
+
+        const allBuyOrders = await Order.find({ type: "buy" }).populate("products").exec();
 
 
         return res.status(200).json({
@@ -156,8 +142,8 @@ exports.getAllBuyOrders = async (req, res) => {
 // ****************************Get All Selling Orders******************************
 exports.getAllSellOrders = async (req, res) => {
     try {
-        
-        const allSellOrders = await Order.find( { type : "sell" }).populate("products").exec();
+
+        const allSellOrders = await Order.find({ type: "sell" }).populate("products").exec();
 
 
         return res.status(200).json({
@@ -183,9 +169,9 @@ exports.getCutomerAllOrders = async (req, res) => {
     try {
         const { id } = req.body;
 
-        const customerDoc = await Customer.findById( id );
-        
-        const customerAllOrders = await Order.find( { customer : customerDoc._id }).populate( "products" ).exec();
+        const customerDoc = await Customer.findById(id);
+
+        const customerAllOrders = await Order.find({ customer: customerDoc._id }).populate("products").exec();
 
 
         return res.status(200).json({
@@ -203,7 +189,7 @@ exports.getCutomerAllOrders = async (req, res) => {
             error: error.message
         })
     }
-}; 
+};
 
 
 // To Do : ****************************Get All Orders of Specific Product******************************
