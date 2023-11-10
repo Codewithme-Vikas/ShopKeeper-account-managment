@@ -1,6 +1,6 @@
 const { default: mongoose } = require("mongoose");
 const Payment = require("../models/Payment");
-const Customer = require("../models/Payment");
+const Customer = require("../models/Customer");
 
 
 
@@ -60,15 +60,15 @@ exports.customerCredit = async (req, res) => {
             return res.status(400).json({ success: false, message: "Provide customer id " });
         }
 
-        // is customer exsits
+        // is customer exsits    
         const isCustomerExsist = await Customer.findById(customerId);
 
         if (!isCustomerExsist) {
-            return res.status(400).json({ success: false, message: "There is no such user " });
+            return res.status(400).json({ success: false, message: "There is no such user!" });
         }
 
         // Aggregate credit
-        const creditDetailsDoc = await Customer.aggregate([
+        const totalOrderAmount = await Customer.aggregate([
             {
                 $match: {
                     _id: new mongoose.Types.ObjectId(customerId)
@@ -91,18 +91,45 @@ exports.customerCredit = async (req, res) => {
             {
                 $group: {
                     _id: "$_id",
-                    totalOrderAmount: { $sum: "$orderDetails.orderAmount" },
-                    totalPaymentAmount: { $sum: "$payments.amount" }
+                    totalOrderAmount: { $sum: "$orderDetails.orderPrice" },
+                }
+            }
+        ])
+
+        const totalPaymentAmount = await Customer.aggregate([
+            {
+                $match: {
+                    _id: new mongoose.Types.ObjectId(customerId)
+                }
+            },
+            {
+                $lookup: {
+                    from: "payments", // The name of the "Order" collection
+                    localField: "payments",
+                    foreignField: "_id",
+                    as: "paymentsDetails"
+                }
+            },
+            {
+                $unwind: {
+                    path: "$paymentsDetails",
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
+                $group: {
+                    _id: "$_id",
+                    totalOrderAmount: { $sum: "$paymentsDetails.amount" },
                 }
             }
         ])
 
 
-
         return res.status(200).json({
             success: true,
             message: "successfully submit the payment",
-            creditDetailsDoc
+            totalOrderAmount,
+            totalPaymentAmount
         });
 
 

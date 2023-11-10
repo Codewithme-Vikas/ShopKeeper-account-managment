@@ -9,6 +9,8 @@ const customerSchema = new mongoose.Schema({
     phone : { type : String },
     address : { type : String },
 
+    password : { type : String , required : true },
+
     accountType : { type : String , enum : [ "Buyer" , "Seller" ] , required : true },
 
     

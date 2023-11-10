@@ -13,6 +13,8 @@ const { dbConnect } = require("./config/database");
 dbConnect();
 
 // Middlewares
+app.use( express.json() );
+
 app.use( cookieParser() );  
 
 // Routes

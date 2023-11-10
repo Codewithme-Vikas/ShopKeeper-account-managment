@@ -2,7 +2,8 @@ const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
-const User = require("../models/Admin");
+const Admin = require("../models/Admin");
+const Customer = require("../models/Customer");
 
 
 // ******************************singup ****************************************
@@ -18,6 +19,9 @@ exports.singup = async (req, res) => {
         if( password !== password2){
             return res.status(400).json({ success : false , message : "Passwords are not matched!" });
         }
+
+        // set User reference to admin or customer according to accountType
+        const User = (accountType === "Admin") ? Admin : Customer;
 
         //Is already exits
         const isUserExits = await User.findOne({ email : email } );
@@ -35,8 +39,8 @@ exports.singup = async (req, res) => {
             email,
             address,
             phone,
-            accountType,
-            password : hashPassword
+            password : hashPassword,
+            ...((accountType === "Admin") ? {} : {accountType} ),
         });
 
         return res.status(200).json({
@@ -60,11 +64,15 @@ exports.singup = async (req, res) => {
 // ******************************singup ****************************************
 exports.login = async (req, res) => {
     try {
-        const { email, password } = req.body;
+        const { email, password , accountType } = req.body;
 
         if(  !email || !password ){
             return res.status(400).json({ success : false , message : "Please provide all required information!" });
         }
+
+        // set User reference to admin or customer according to accountType
+        const User = (accountType === "Admin") ? Admin : Customer;
+
 
         //Is already exits
         const userDoc = await User.findOne({ email : email } );
@@ -84,7 +92,7 @@ exports.login = async (req, res) => {
         const payload = {
             id : userDoc._id,
             email : userDoc.email,
-            accountType : userDoc.accountType,
+            accountType : userDoc.accountType || accountType,
         }
 
         const token = await jwt.sign( payload , process.env.JWT_SECRECT_KEY , {} );

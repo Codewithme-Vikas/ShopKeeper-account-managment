@@ -45,7 +45,7 @@ exports.createOrder = async (req, res) => {
         const customerDoc = await Customer.findByIdAndUpdate(customerId, {
             $push: {
                 orders: orderDoc._id,
-                payments: paymentDoc._id,
+                ...( paymentDoc ? { payments: paymentDoc._id} : {} ),
             },
         }, { new: true });
 
@@ -97,7 +97,7 @@ exports.deleteOrder = async (req, res) => {
 
         return res.status(200).json({
             success: true,
-            message: "Order is created",
+            message: "Order is deleted.",
             orderDoc,
             customerDoc
         });

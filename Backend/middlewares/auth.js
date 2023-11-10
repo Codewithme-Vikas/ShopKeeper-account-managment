@@ -39,8 +39,7 @@ exports.auth = ( req , res , next )=>{
 // ******************************** isAdmin **********************************************
 exports.isAdmin = ( req , res , next )=>{
     try {
-       
-        if( req.userInfo.accountType !== Admin ){
+        if( req.userInfo.accountType !== "Admin" ){
             return res.status(401).json({success : false , message : "You are not authorize as admin."});
         }
      
