@@ -176,7 +176,7 @@ exports.getCutomerAllOrders = async (req, res) => {
 
         return res.status(200).json({
             success: true,
-            message: "Successfully getting all  customer All Orders",
+            message: "Successfully getting   customer All Orders",
             customerDoc,
             customerAllOrders
         });

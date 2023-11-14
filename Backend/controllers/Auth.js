@@ -8,7 +8,7 @@ const Customer = require("../models/Customer");
 
 // ******************************singup ****************************************
 // Email will be primary key
-exports.singup = async (req, res) => {
+exports.signup = async (req, res) => {
     try {
         const { name , email , address , phone , accountType , password , password2 } = req.body;
 

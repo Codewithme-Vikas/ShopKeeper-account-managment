@@ -3,14 +3,13 @@ const express = require("express");
 const router = express.Router();
 
 // controllers
-const { login , signup } = require("../controllers/Auth");
+const { getAllCustomers } = require("../controllers/Customer");
 
 
 // **********************************Auth APIS************************************************
 
-router.post("/signup" , signup );
+router.get("/getAllCustomers" , getAllCustomers );
 
-router.post("/login" , login );
 
 // -------------------------------------------------------------------------------------------
 
