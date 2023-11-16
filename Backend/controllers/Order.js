@@ -41,7 +41,7 @@ exports.createOrder = async (req, res) => {
             });
         }
 
-        // store orderId into cutomer
+        // store orderId and paymentId into customer
         const customerDoc = await Customer.findByIdAndUpdate(customerId, {
             $push: {
                 orders: orderDoc._id,
@@ -118,7 +118,13 @@ exports.deleteOrder = async (req, res) => {
 exports.getAllBuyOrders = async (req, res) => {
     try {
 
-        const allBuyOrders = await Order.find({ type: "buy" }).populate("products").exec();
+        const allBuyOrders = await Order.find({ type: "buy" })
+                                    .populate({ 
+                                        path : "products",
+                                        populate : { path : "id"  , select : "productName price"}
+                                    })
+                                    .populate({ path : "customer" , select : "name address phone"})
+                                    .exec();
 
 
         return res.status(200).json({
@@ -143,7 +149,13 @@ exports.getAllBuyOrders = async (req, res) => {
 exports.getAllSellOrders = async (req, res) => {
     try {
 
-        const allSellOrders = await Order.find({ type: "sell" }).populate("products").exec();
+        const allSellOrders = await Order.find({ type: "sell" })
+                                    .populate({ 
+                                        path : "products",
+                                        populate : { path : "id"  , select : "productName price"}
+                                    })
+                                    .populate({ path : "customer" , select : "name address phone"})
+                                    .exec();
 
 
         return res.status(200).json({
@@ -167,17 +179,19 @@ exports.getAllSellOrders = async (req, res) => {
 // ****************************Get All Orders of Specific Customer******************************
 exports.getCutomerAllOrders = async (req, res) => {
     try {
-        const { id } = req.body;
+        const { customerId } = req.body;
+        
+        const customerAllOrders = await Customer.findById( customerId )
+                                    .populate({path  : "payments" , select : "createdAt amount"})
+                                    .exec();
 
-        const customerDoc = await Customer.findById(id);
-
-        const customerAllOrders = await Order.find({ customer: customerDoc._id }).populate("products").exec();
-
+        if( !customerAllOrders ){
+            return res.status(400).json({ success : false , message : "Customer is not exists!"});
+        }
 
         return res.status(200).json({
             success: true,
             message: "Successfully getting   customer All Orders",
-            customerDoc,
             customerAllOrders
         });
 

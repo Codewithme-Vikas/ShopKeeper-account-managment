@@ -3,59 +3,25 @@ import { Link } from 'react-router-dom'
 
 
 import { CiEdit } from "react-icons/ci";
-import { FaTrashAlt } from "react-icons/fa";
 import { BiSolidUserDetail } from "react-icons/bi";
+
+import { getAllCustomer } from "../../services/operations/customer";
 
 export default function CustomerList() {
 
     const [ customers , setCustomers ] = useState( [] );
 
-    async function getAllCustomer(){
-        try {
 
-            const response = await fetch( `http://localhost:3000/api/v1/customer/getAllCustomers`,{
-                method : 'GET',
-                credentials : "include"
-            })
-            
-            const data = await response.json();
-            if( data.success ){
-                setCustomers( data.allCustomersDoc );
-                return navigate("/customer/read");
-            }else{
-                toast.error(data.message)
-                return false;
-            }
-        } catch (error) {
-            console.log(error , "create customer handler");
-            return null;
+    async function fetchAllCustomer(){
+        const customersData = await getAllCustomer();
+        if( customersData ){
+            setCustomers(customersData)
         }
+        return;
     }
 
-    // async function deleteCustomer( id ){
-    //     try {
-
-    //         const response = await fetch( `http://localhost:3000/api/v1/customer/getAllCustomers`,{
-    //             method : 'GET',
-    //             credentials : "include"
-    //         })
-            
-    //         const data = await response.json();
-    //         if( data.success ){
-    //             setCustomers( data.allCustomersDoc );
-    //             return navigate("/customer/read");
-    //         }else{
-    //             toast.error(data.message)
-    //             return false;
-    //         }
-    //     } catch (error) {
-    //         console.log(error , "create customer handler");
-    //         return null;
-    //     }
-    // }
-
     useEffect( ()=>{
-        getAllCustomer()
+        fetchAllCustomer();
     },[]);
     
     return (
@@ -92,15 +58,16 @@ export default function CustomerList() {
                                         <td className="py-2 px-4 border-b">{customer.address}</td>
                                         <td className="py-2 px-4 border-b">{customer.accountType}</td>
                                         <td className="py-2 px-4 border-b flex gap-4 items-center">
-                                            <Link className="bg-blue-500 text-white px-2 py-1 rounded">
+                                            <Link 
+                                                to={`/customer/update/${customer._id}`}
+                                                className="bg-blue-500 text-white px-2 py-1 rounded">
                                                 <CiEdit/>
                                             </Link>
-                                            <button className="bg-red-500 text-white px-2 py-1 rounded">
-                                                <FaTrashAlt/>
-                                            </button>
-                                            <button className="bg-red-500 text-white px-2 py-1 rounded">
+                                            <Link 
+                                                to={`/customer/detail/${customer._id}`}
+                                                className="bg-red-500 text-white px-2 py-1 rounded">
                                                 <BiSolidUserDetail/>
-                                            </button>
+                                            </Link>
                                         </td>
                                     </tr>
                                 )

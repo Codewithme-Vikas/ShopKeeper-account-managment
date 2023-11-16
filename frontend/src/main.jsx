@@ -36,13 +36,21 @@ const router = createBrowserRouter([
                         element : <ProductPage/>
                     },
                     {
-                        path: "order",
-                        element: <OrderPage />
-                    },
-                    {
                         path: "customer/:op",
                         element: <CustomerPage />,
-                    }
+                    },
+                    {
+                        path : "customer/update/:id",
+                        element : <CustomerPage/>
+                    },
+                    {
+                        path : "customer/detail/:id",
+                        element : <CustomerPage/>
+                    },
+                    {
+                        path: "order/:op",
+                        element: <OrderPage />
+                    },
                 ]
             },
             {
@@ -58,12 +66,12 @@ const router = createBrowserRouter([
 ])
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-    <React.StrictMode>
+    // <React.StrictMode>
         <UserContextProvider>
             <RouterProvider router={router}>
                 <App />
                 
             </RouterProvider>
         </UserContextProvider>
-    </React.StrictMode>,
+    // </React.StrictMode>,
 )

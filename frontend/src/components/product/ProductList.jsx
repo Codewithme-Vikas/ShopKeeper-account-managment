@@ -1,35 +1,24 @@
 import { useEffect, useState } from "react"
-import { Link, json } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
-import { productData } from "../../data/customerData"
 
 import { CiEdit } from "react-icons/ci";
 import { FaTrashAlt } from "react-icons/fa";
 import toast from "react-hot-toast";
 
+import { getAllProducts } from "../../services/operations/product"
+
+
 export default function CustomerList() {
 
-    const [ products , setProducts ] = useState( productData );
+    const [ products , setProducts ] = useState( [] );
 
-
-    async function getAllProducts(){
-        try {
-            const response = await fetch( "http://localhost:3000/api/v1/product/getAllProducts",{
-                credentials : "include"
-            });
-
-            const data = await response.json();
-            if( data.success ){
-                setProducts( data.allProductsDoc )
-                return true;
-            }else{
-                console.log("can not get products");
-                return false
-            }
-        } catch (error) {
-            console.log(error , "Error in products data handler")
-            return null;
+    async function fetchAllProducts(){
+        const productsData = await getAllProducts();
+        if( productsData ){
+            setProducts( productsData );
         }
+        return;
     }
 
     async function deleteProduct( id ){
@@ -61,7 +50,7 @@ export default function CustomerList() {
     }
 
     useEffect( ()=>{
-        getAllProducts();
+        fetchAllProducts();
     },[]);
 
     return (

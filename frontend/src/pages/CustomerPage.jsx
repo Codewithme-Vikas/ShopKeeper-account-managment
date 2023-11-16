@@ -1,9 +1,14 @@
-import { Link , useParams } from 'react-router-dom'
+import { Link, useLocation, useParams } from 'react-router-dom'
+
 import CreateCustomer from '../components/customer/CreateCustomer'
 import CustomerList from '../components/customer/CustomerList'
+import UpdateCustomer from '../components/customer/UpdateCustomer'
+import CustomerDetail from '../components/customer/CustomerDetail'
 
 export default function CustomerPage() {
 
+    const location = useLocation();
+    const urlPath = location.pathname;
     const params = useParams();
 
     return (
@@ -18,12 +23,19 @@ export default function CustomerPage() {
 
             <div className='w-full m-2 mt-6'>
 
-                { params.op === "add" && <CreateCustomer /> }
-                
+                {params.op === "add" && <CreateCustomer />}
+
                 {
                     params.op === "read" && <CustomerList />
                 }
-                
+
+                {
+                    urlPath.includes("update") && params?.id && <UpdateCustomer id={params.id} />
+                }
+
+                {
+                    urlPath.includes("detail") && params?.id && <CustomerDetail id={params.id} />
+                }
 
             </div>
 

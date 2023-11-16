@@ -13,6 +13,6 @@ export const navLinks = [
     },
     {
         title: "Order",
-        path: "/order",
+        path: "/order/read",
     },
 ];
