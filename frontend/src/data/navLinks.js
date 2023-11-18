@@ -4,15 +4,11 @@ export const navLinks = [
         path : "/"
     },
     {
-        title : "Product",
-        path : "/product/read"
+        title : "Add",
+        path : "/add"
     },
     {
-        title : "Customer",
-        path : "/customer/read"
-    },
-    {
-        title: "Order",
-        path: "/order/read",
-    },
+        title : "List",
+        path : "/list"
+    }
 ];

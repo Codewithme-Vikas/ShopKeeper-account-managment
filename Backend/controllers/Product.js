@@ -4,14 +4,14 @@ const Product = require("../models/Product")
 // **********************create Product***************************
 exports.createProduct = async( req , res )=>{
     try {
-        const { productName , price  } = req.body;
+        const { productName , price , unit , type , openingStock , currentStock } = req.body;
 
-        if( !productName ){
+        if( !productName || !unit || !type ){
             return res.status(400).json({ success : false , message : "Provide product name"});
         }
 
         // is already exists
-        const isExists = await Product.findOne( { productName} );
+        const isExists = await Product.findOne( { productName } );
 
         if( isExists ){
             return res.status(400).json({ success : false , message : "Product is already exits."});
@@ -20,7 +20,11 @@ exports.createProduct = async( req , res )=>{
         // store into DB
         const productDoc = await Product.create({
             productName,
+            unit,
+            type,
             price,
+            openingStock,
+            currentStock
         });
 
         return res.status(200).json({
@@ -44,7 +48,7 @@ exports.createProduct = async( req , res )=>{
 // **********************update Product***************************
 exports.updateProduct = async( req , res )=>{
     try {
-        const { id , productName , price  } = req.body;
+        const { id , productName , price , unit , addStock  } = req.body;
 
         if( !id ){
             return res.status(400).json({ success : false , message : "Provide product id"});
@@ -54,14 +58,18 @@ exports.updateProduct = async( req , res )=>{
         const isExists = await Product.findById(id);
 
         if( !isExists ){
-            return res.status(400).json({ success : false , message : "Product is not exits."});
+            return res.status(400).json({ success : false , message : "Product is not exists."});
         }
 
         // update product 
         const productDoc = await Product.findByIdAndUpdate( id , {
             $set : {
                 productName,
-                price
+                unit,
+                price,
+            },
+            $inc : {
+                currentStock : addStock ?? 0, //nullish coalescing operator (??)
             }
         },{ new : true });
 
@@ -77,6 +85,35 @@ exports.updateProduct = async( req , res )=>{
         return res.status(400).json({
             success : false,
             message : "Failed to update product",
+            error : error.message
+        })
+    }
+}
+
+
+// *************************Get all Products***********************
+exports.getProduct = async( req , res )=>{
+    try {
+        const { productId } = req.body;
+
+        if( !productId ){
+            return res.status(400).json({ success : false , message : "Product is not exists."});
+        }
+
+        const productDoc = await Product.findById( productId );
+
+        return res.status(200).json({
+            success : true,
+            message : "Get  product successfully",
+            productDoc
+        })
+
+        
+    } catch (error) {
+        console.log( error , "Error in get product controller");
+        return res.status(400).json({
+            success : false,
+            message : "Failed to get product",
             error : error.message
         })
     }

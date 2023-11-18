@@ -3,24 +3,26 @@ const mongoose = require("mongoose");
 
 const customerSchema = new mongoose.Schema({
 
-    name :  { type : String , required : true , trim : true },
+    name: { type: String, required: true, trim: true },
 
-    email : { type : String , trim : true , unique : true },
-    phone : { type : String },
-    address : { type : String },
+    email: { type: String, trim: true, unique: true },
+    phone: { type: String },
+    address: { state : String, district: String , city: String },
+    GSTNumber: { type: String },
+    PAN: { type: String },
 
-    password : { type : String , required : true },
+    // accounting : { type : Number , required : true }, // accounting = total (orderPrice - payments)
 
-    accountType : { type : String , enum : [ "Buyer" , "Seller" ] , required : true },
+    accountType: { type: String, enum: ["Buyer", "Seller"], required: true },
 
-    
-    orders : [ { type : mongoose.Schema.Types.ObjectId , ref : "Order" } ],
-    
-    payments : [ { type : mongoose.Schema.Types.ObjectId , ref : "Payment" } ],
 
-},{
-    timestamps : true ,
+    orders: [{ type: mongoose.Schema.Types.ObjectId, ref: "Order" }],
+
+    payments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Payment" }],
+
+}, {
+    timestamps: true,
 });
 
 
-module.exports = mongoose.model("Customer" , customerSchema );
+module.exports = mongoose.model("Customer", customerSchema);

@@ -35,7 +35,7 @@ export default function CustomerList() {
 
             const data = await response.json();
             if( data.success ){
-                getAllProducts(); // reFetch the products
+                fetchAllProducts(); // reFetch the products
                 toast.success("Product is successfully delete!");
                 return true;
             }else{

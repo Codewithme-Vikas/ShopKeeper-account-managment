@@ -1,6 +1,100 @@
 const Customer = require("../models/Customer");
 
 
+// ***************************Create Customer************************************
+// Email will be primary key
+// address = { state : "" , district : "", city : "" }
+exports.createCustomer = async (req, res) => {
+    try {
+        const { name , email , phone , address , GSTNumber , PAN , accountType } = req.body;
+
+        if( !name || !accountType || !email  ){
+            return res.status(400).json({ success : false , message : "Please provide all required information!" });
+        }
+
+        //Is already exits
+        const isCustomerExits = await Customer.findOne({ email : email } );
+
+        if( isCustomerExits?.name === name && isCustomerExits?.phone === phone ){
+            return res.status(400).json({ success : false , message : "Customer is already exits!" });
+        }
+        
+        // Create new entry into the db
+        const customerDoc = await Customer.create({
+            name,
+            email,
+            phone,
+            address,
+            GSTNumber,
+            PAN,
+            accountType
+        });
+
+        return res.status(200).json({
+            success : true,
+            message : "Successfully created Customer.",
+            customerDoc
+        });
+
+
+    } catch (error) {
+        console.log(error, "Error in create customer controller ");
+        return res.json({
+            success: false,
+            message: "Failed to create Customer",
+            error: error.message
+        })
+    }
+}
+
+
+// ***************************Update Customers************************************
+exports.updateCustomer = async (req, res) => {
+    try {
+        
+        const { customerId , name , email , phone , address  , GSTNumber , PAN  } = req.body;
+
+        if( !customerId ){
+            return res.status(400).json({ success : false , message : "provide customer id"});
+        }
+
+        // is customer exits
+        const isCustomerExists  = await Customer.findById( customerId );
+
+        if( !isCustomerExists ){
+            return res.status(400).json({success : false, message : "customer is not exists!"});
+        }
+
+        // update the customer document
+        const customerDoc = await Customer.findByIdAndUpdate( customerId , {
+            $set : {
+                name , 
+                email,
+                phone,
+                address,
+                GSTNumber,
+                PAN
+            }
+        },{ new : true });
+
+        return res.status(200).json({
+            success: true,
+            message: "successfully get customers data",
+            customerDoc
+        });
+
+
+    } catch (error) {
+        console.log(error, "Error in update customer");
+        return res.status(400).json({
+            success: false,
+            message: "Failed to update customer",
+            error: error.message
+        })
+    }
+}
+
+
 // ***************************Get Customers************************************
 exports.getCustomer = async (req, res) => {
     try {
@@ -61,47 +155,6 @@ exports.getAllCustomers = async (req, res) => {
     }
 }
 
-// ***************************Update Customers************************************
-exports.updateCustomer = async (req, res) => {
-    try {
-        
-        const { customerId , name , email , phone , address } = req.body;
-
-        if( !customerId ){
-            return res.status(400).json({ success : false , message : "provide customer id"});
-        }
-
-        // is customer exits
-        const isCustomerExists  = await Customer.findById( customerId );
-
-        if( !isCustomerExists ){
-            return res.status(400).json({success : false, message : "customer is not exists!"});
-        }
-
-        // update the customer document
-        const customerDoc = await Customer.findByIdAndUpdate( customerId , {
-            $set : {
-                name , 
-                email,
-                phone,
-                address
-            }
-        },{ new : true });
-
-        return res.status(200).json({
-            success: true,
-            message: "successfully get customers data",
-            customerDoc
-        });
 
 
-    } catch (error) {
-        console.log(error, "Error in update customer");
-        return res.status(400).json({
-            success: false,
-            message: "Failed to update customer",
-            error: error.message
-        })
-    }
-}
 

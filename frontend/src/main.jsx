@@ -4,17 +4,14 @@ import App from './App.jsx'
 import './index.css'
 
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
-import { Toaster } from 'react-hot-toast'
 
 import HomePage from "./pages/HomePage.jsx"
-import ProductPage from "./pages/ProductPage.jsx"
-import OrderPage from "./pages/OrderPage.jsx"
-import CustomerPage from "./pages/CustomerPage.jsx"
 import ErrorPage from './pages/ErrorPage.jsx'
 import SignupPage from './pages/SignupPage.jsx'
 import LoginPage from './pages/LoginPage.jsx'
 import { UserContextProvider } from './context/userContext.jsx'
-import UpdateProduct from './components/product/UpdateProduct.jsx'
+import ListPage from './pages/ListPage.jsx'
+import AddPage from './pages/AddPage.jsx'
 
 const router = createBrowserRouter([
     {
@@ -28,28 +25,32 @@ const router = createBrowserRouter([
                 element: <HomePage />,
                 children: [
                     {
-                        path: "product/:op",
-                        element: <ProductPage />,
+                        path : "list",
+                        element : <ListPage/>
+                    },
+                    {
+                        path : "list/:type",
+                        element : <ListPage/>
+                    },
+                    {
+                        path : "add",
+                        element : <AddPage/>
+                    },
+                    {
+                        path : "add/:type",
+                        element : <AddPage/>
                     },
                     {
                         path : "product/update/:id",
-                        element : <ProductPage/>
-                    },
-                    {
-                        path: "customer/:op",
-                        element: <CustomerPage />,
+                        element : <ListPage/>
                     },
                     {
                         path : "customer/update/:id",
-                        element : <CustomerPage/>
+                        element : <ListPage/>
                     },
                     {
                         path : "customer/detail/:id",
-                        element : <CustomerPage/>
-                    },
-                    {
-                        path: "order/:op",
-                        element: <OrderPage />
+                        element : <ListPage/>
                     },
                 ]
             },

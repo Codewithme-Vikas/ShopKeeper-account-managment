@@ -41,7 +41,13 @@ export default function CustomerDetail({ id }) {
 
             <p>{customer.name}</p>
             <p>{customer.email}</p>
-            <p>{customer.address}</p>
+            <p>GST Number :- {customer.GSTNumber}</p>
+            <p>PAN :- {customer.PAN}</p>
+
+            <p>{customer?.address?.state}</p>
+            <p>{customer.address?.district}</p>
+            <p>{customer.address?.city}</p>
+            
             <p>Style this page and show customer orders and payments</p>
 
             <p className="text-lg py-2">Payment History:-</p>

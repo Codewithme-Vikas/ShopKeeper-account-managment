@@ -55,7 +55,13 @@ export default function CustomerList() {
                                         <td className="py-2 px-4 border-b">{customer.name}</td>
                                         <td className="py-2 px-4 border-b">{customer.email}</td>
                                         <td className="py-2 px-4 border-b">{customer.phone}</td>
-                                        <td className="py-2 px-4 border-b">{customer.address}</td>
+                                        <td className="py-2 px-4 border-b">
+
+                                            { customer?.address?.city ? `${customer.address.city}, ` : ""}
+                                            { customer?.address?.district ? `${customer.address.district}, `: ""}
+                                            { customer?.address?.state ?? ""}
+                                            
+                                        </td>
                                         <td className="py-2 px-4 border-b">{customer.accountType}</td>
                                         <td className="py-2 px-4 border-b flex gap-4 items-center">
                                             <Link 

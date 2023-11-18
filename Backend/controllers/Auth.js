@@ -2,17 +2,15 @@ const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
-const Admin = require("../models/Admin");
-const Customer = require("../models/Customer");
-
+const User = require("../models/User");
 
 // ******************************singup ****************************************
-// Email will be primary key
+// Name will be primary key
 exports.signup = async (req, res) => {
     try {
         const { name , email , address , phone , accountType , password , password2 } = req.body;
 
-        if( !name || !accountType || !email || !password || !password2 ){
+        if( !name || !accountType || !password || !password2 ){
             return res.status(400).json({ success : false , message : "Please provide all required information!" });
         }
 
@@ -20,11 +18,8 @@ exports.signup = async (req, res) => {
             return res.status(400).json({ success : false , message : "Passwords are not matched!" });
         }
 
-        // set User reference to admin or customer according to accountType
-        const User = (accountType === "Admin") ? Admin : Customer;
-
         //Is already exits
-        const isUserExits = await User.findOne({ email : email } );
+        const isUserExits = await User.findOne({ name } );
 
         if( isUserExits ){
             return res.status(400).json({ success : false , message : "User is already exits!" });
@@ -40,9 +35,11 @@ exports.signup = async (req, res) => {
             address,
             phone,
             password : hashPassword,
-            ...((accountType === "Admin") ? {} : {accountType} ),
+            accountType
         });
 
+        userDoc.password = undefined ; // to hide password
+        
         return res.status(200).json({
             success : true,
             message : "Successfully singup",
@@ -64,18 +61,15 @@ exports.signup = async (req, res) => {
 // ******************************singup ****************************************
 exports.login = async (req, res) => {
     try {
-        const { email, password , accountType } = req.body;
+        const { name, password } = req.body;
 
-        if(  !email || !password ){
+        if(  !name || !password ){
             return res.status(400).json({ success : false , message : "Please provide all required information!" });
         }
 
-        // set User reference to admin or customer according to accountType
-        const User = (accountType === "Admin") ? Admin : Customer;
-
 
         //Is already exits
-        const userDoc = await User.findOne({ email : email } );
+        const userDoc = await User.findOne({ name } );
 
         if( !userDoc ){
             return res.status(403).json({ success : false , message : "User is not exits!, Invalid creadentials" });
@@ -92,7 +86,7 @@ exports.login = async (req, res) => {
         const payload = {
             id : userDoc._id,
             email : userDoc.email,
-            accountType : userDoc.accountType || accountType,
+            accountType : userDoc.accountType,
         }
 
         const token = await jwt.sign( payload , process.env.JWT_SECRECT_KEY , {} );

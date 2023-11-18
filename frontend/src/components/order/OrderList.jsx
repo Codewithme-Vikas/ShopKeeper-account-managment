@@ -63,13 +63,13 @@ export default function OrderList() {
                                     <tr key={order._id}>
                                         <td className="py-2 px-4 border-b">{index + 1}</td>
                                         <td className="py-2 px-4 border-b">{order?.customer.name}</td>
-                                        <td className="py-2 px-4 border-b">{order?.customer.address}</td>
+                                        <td className="py-2 px-4 border-b">{order?.customer.address?.state}</td>
                                         <td className="py-2 px-4 border-b">{order?.createdAt}</td>
                                         <td className="py-2 px-4 border-b">{order?.orderPrice}</td>
                                         <td className="py-2 px-4 border-b">
                                         {
                                             order?.products.map( (product)=>(
-                                                <p key={product.id._id }>{ product.id.productName} : {product.quantity}</p>
+                                                <p key={product.id?._id }>{ product.id?.productName} : {product.quantity}</p>
                                             ))
                                         }
                                         </td>
