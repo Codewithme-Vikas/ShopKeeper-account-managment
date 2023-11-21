@@ -33,7 +33,8 @@ export default function CreateProduct() {
             
             const data = await response.json();
             if( data.success ){
-                return navigate("/product/read");
+                toast.success("Product added successfully.")
+                return navigate("/list/product");
             }else{
                 toast.error("Failed to create product!")
                 return false;

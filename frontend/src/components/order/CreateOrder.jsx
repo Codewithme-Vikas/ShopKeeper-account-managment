@@ -1,33 +1,50 @@
 import { useState, useEffect } from "react";
 import { toast } from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+
+import CreateOrderForm from "./createOrderForm";
 
 import { getAllCustomer } from "../../services/operations/customer";
 import { getAllProducts } from "../../services/operations/product";
-import SelectProduct from "./SelectProduct";
 
-// To do : Note :- all products array has different formats, selectedProducts will be use for send to backend and filteredProducts will be use for display
+import SelectProduct from "./SelectProduct";
+import { useNavigate } from "react-router-dom";
+
+
+
 export default function CreateOrder() {
 
     const navigate = useNavigate();
 
+    const [isSellOrder, setIsSellOrder] = useState(true);
+
     const [customers, setCustomers] = useState([]);
     const [products, setProducts] = useState([]);
+
+    const [optionCustomers, setOptionCustomers] = useState([]);
+    const [optionProducts, setOptionProducts] = useState([]);
+
     const [selectedProducts, setSelectedProducts] = useState([]);
 
+    const [totalPrice, setTotalPrice] = useState(0);
+    const [finalPrice, setFinalPrice] = useState(0)
+
     const [orderData, setOrderData] = useState({
-        customerId: "", type: "sell", payAmount: 0, discount: 0,
+        customerId: "", discount: 0, invoiceNo: "", date: "", enterPrice: "",
+        gst1: "", gst2: "", gst1Rate: 0, gst2Rate: 0
     });
-    const [orderPrice, setOrderPrice] = useState(0);
+
 
 
     const filteredProducts = products
-        .filter(product => selectedProducts.some(selectedProduct => selectedProduct.id === product._id))
+        .filter(product => selectedProducts.some(selectedProduct => selectedProduct.product === product._id))
         .map(product => {
-            const selectedProduct = selectedProducts.find(selectedProduct => selectedProduct.id === product._id);
+            const selectedProduct = selectedProducts.find(selectedProduct => selectedProduct.product === product._id);
             return {
                 ...product,
                 quantity: selectedProduct.quantity,
+                height: selectedProduct.height,
+                width: selectedProduct.width,
+                area: selectedProduct.width * selectedProduct.height,
             };
         })
 
@@ -37,9 +54,19 @@ export default function CreateOrder() {
         e.preventDefault();
 
         try {
-            orderData["orderPrice"] = orderPrice;
-            orderData["products"] = selectedProducts;
 
+            if( !selectedProducts.length ){
+                toast.error("Select at least one product");
+                return;
+            }
+            
+            orderData["products"] = selectedProducts;
+            orderData["type"] = isSellOrder ? "Sell" : "Buy";
+            orderData["orderPrice"] = finalPrice;
+            orderData["GST"] = {
+                GST1: { name: orderData.gst1, rate: orderData.gst1Rate },
+                GST2: { name: orderData.gst2, rate: orderData.gst2Rate },
+            }
             const response = await fetch(`http://localhost:3000/api/v1/order/create`, {
                 method: 'POST',
                 body: JSON.stringify(orderData),
@@ -52,7 +79,7 @@ export default function CreateOrder() {
             const data = await response.json();
             if (data.success) {
                 toast.success("Order successfully added!");
-                return navigate("/order/read");
+                return navigate(`/order/detail/${data.orderDoc?._id}`);
             } else {
                 toast.error(data.message)
                 return false;
@@ -65,19 +92,8 @@ export default function CreateOrder() {
 
 
 
-    function changeHandler(e) {
-        setOrderData(prevData => {
-            // return the object with previous field(data) and update target field
-            return {
-                ...prevData,
-                [e.target.name]: e.target.value
-            }
-        })
-    }
 
-
-
-    async function fetchAllCustomerAndProducts() {
+    async function fetchCustomersAndProducts() {
         const customersData = await getAllCustomer();
         const productsData = await getAllProducts();
         if (customersData) {
@@ -89,171 +105,155 @@ export default function CreateOrder() {
         return;
     }
 
+
+
     useEffect(() => {
-        fetchAllCustomerAndProducts();
+        fetchCustomersAndProducts();
     }, []);
 
+    useEffect(() => {
+        const customerType = isSellOrder ? "Buyer" : "Seller";
+        setOptionCustomers(customers.filter(customer => customer.accountType === customerType));
+    }, [isSellOrder, customers])
+
+    useEffect(() => {
+        if (!isSellOrder) {
+            setOptionProducts(products.filter(product => product.type === "Purchase"));
+        } else {
+            setOptionProducts(products)
+        }
+    }, [isSellOrder, products]);
 
     useEffect(() => {
         let totalPrice = 0;
 
         filteredProducts.forEach(product => {
-            totalPrice += product.quantity * product.price;
+            totalPrice += product?.area ? (product.quantity * product.price * product.area) : product.quantity * product.price;
         });
 
-        setOrderPrice(totalPrice);
+        setTotalPrice(totalPrice);
     }, [filteredProducts]);
 
+    useEffect(() => {
+        const finalGSTRate = Number(orderData.gst1Rate) + Number(orderData.gst2Rate);
+
+        const discountedPrice = orderData.enterPrice - orderData.discount;
+        const finalPrice = discountedPrice * finalGSTRate / 100;
+
+        setFinalPrice(discountedPrice + finalPrice)
+    }, [orderData.gst1Rate, orderData.gst2Rate, orderData.enterPrice, orderData.discount]);
+
+
     return (
-        <div className="border flex flex-col gap-8 p-6 pb-10">
 
-            <p className="text-lg text-rose-500">Add new order...</p>
+        <div className="flex flex-col gap-8">
 
-            <SelectProduct
-                products={products}
-                setSelectedProducts={setSelectedProducts}
-            />
+            <div className="flex gap-6">
+                <p className="text-lg italic text-blue-400">Order Type :</p>
 
+                <button
+                    disabled={isSellOrder}
+                    onClick={() => {
+                        setIsSellOrder(true);
+                        setSelectedProducts([])
+                    }}
+                    className="bg-slate-600 p-2 px-6 rounded outline-none hover:bg-slate-700 
+                        disabled:opacity-70 disabled:cursor-not-allowed"
+                >
+                    Sell
+                </button>
 
+                <button
+                    disabled={!isSellOrder}
+                    onClick={() => {
+                        setIsSellOrder(false)
+                        setSelectedProducts([])
+                    }}
+                    className="bg-blue-800 p-2 px-6 rounded outline-none hover:bg-blue-700
+                        disabled:opacity-70 disabled:cursor-not-allowed"
+                >
+                    Buy
+                </button>
 
-            <form onSubmit={submitHandler} className="flex flex-col gap-6 flex-wrap items-start justify-center">
-
-
-                <div className="flex items-center gap-6 flex-wrap">
-
-
-                    <div className="flex gap-2 items-center justify-center">
-                        <label htmlFor="customerId">Customer</label>
-                        <select
-                            name="customerId"
-                            required
-                            className="p-2 px-4 rounded text-black outline-none"
-                            onChange={changeHandler}
-                            value={orderData.customerId}
-                        >
-                            <option value="" disabled>
-                                Choose an customer
-                            </option>
-                            {
-                                customers?.map((customer) => {
-                                    return (
-                                        <option value={customer._id} key={customer._id}>{customer.name}</option>
-                                    )
-                                })
-                            }
-                        </select>
-                    </div>
-
-                    <div className="flex gap-2 items-center justify-center">
-                        <label htmlFor="type">Type</label>
-                        <select
-                            name="type"
-                            required
-                            className="p-2 px-4 rounded text-black outline-none"
-                            onChange={changeHandler}
-                            value={orderData.type}
-                        >
-                            <option value="buy">Buy</option>
-                            <option value="sell">Sell</option>
-                        </select>
-                    </div>
-
-
-
-                    <div className="flex gap-2 items-center justify-center">
-                        <label htmlFor="orderPrice">Price</label>
-                        <input
-                            type="number"
-                            name="orderPrice"
-                            required
-                            className="p-1 rounded text-black outline-none"
-                            value={orderPrice}
-                            readOnly
-                        />
-                    </div>
-
-                    <div className="flex gap-2 items-center justify-center">
-                        <label htmlFor="payAmount">Payment</label>
-                        <input
-                            type="number"
-                            name="payAmount"
-                            className="p-1 rounded text-black outline-none"
-                            onChange={changeHandler}
-                            value={orderData.payAmount}
-                        />
-                    </div>
-
-                    <div className="flex gap-2 items-center justify-center">
-                        <label htmlFor="discount">Discount</label>
-                        <input
-                            type="number"
-                            name="discount"
-                            className="p-1 rounded text-black outline-none"
-                            onChange={changeHandler}
-                            value={orderData.discount}
-                        />
-                    </div>
-
-                    <div className="flex gap-2 items-center justify-center">
-                        <label htmlFor="discountedPrice">Price after discount</label>
-                        <input
-                            type="number"
-                            name="discountedPrice"
-                            className="p-1 rounded text-black outline-none"
-                            readOnly
-                            value={orderPrice - orderData.discount}
-                        />
-                    </div>
-                </div>
-
-                <div className="flex gap-6">
-                    <button className="bg-rose-800 p-2 px-6 rounded outline-none hover:bg-rose-700">Create</button>
-                    <button type="button" onClick={() => navigate(-1)} className="bg-blue-800 p-2 px-6 rounded outline-none hover:bg-blue-700">Cancle</button>
-                </div>
-
-
-            </form>
-
-
-
-            <div className="flex flex-col gap-4">
-                <p className="text-blue-500 text-lg">Select products :</p>
-                {
-                    selectedProducts.length > 0 &&
-                    <div>
-                        <table className="min-w-full  border border-gray-300 text-left overflow-x-auto">
-
-                            <thead className="bg-slate-800">
-                                <tr>
-                                    <th className="py-2 px-4 border-b">S.No.</th>
-                                    <th className="py-2 px-4 border-b">Name</th>
-                                    <th className="py-2 px-4 border-b">Price</th>
-                                    <th className="py-2 px-4 border-b">Quantity</th>
-                                    <th className="py-2 px-4 border-b">Total</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {
-                                    filteredProducts.map((product, index) => {
-                                        return (
-                                            <tr key={product._id}>
-                                                <td className="py-2 px-4 border-b">{index + 1}</td>
-                                                <td className="py-2 px-4 border-b">{product.productName}</td>
-                                                <td className="py-2 px-4 border-b">{product.price}</td>
-                                                <td className="py-2 px-4 border-b">{product.quantity}</td>
-                                                <td className="py-2 px-4 border-b">{product.quantity * product.price}</td>
-                                            </tr>
-                                        )
-                                    })
-                                }
-                            </tbody>
-                        </table>
-                    </div>
-                }
             </div>
 
 
+            <div className="border flex flex-col gap-8 p-6 pb-10">
 
-        </div>
+                <p className="text-lg text-rose-500">
+                    {`Add new ${isSellOrder ? "Sell" : "Buy"} order...`}
+                </p>
+
+                <SelectProduct
+                    isSellOrder={isSellOrder}
+                    products={optionProducts}
+                    setSelectedProducts={setSelectedProducts}
+                />
+
+
+                <CreateOrderForm
+                    totalPrice={totalPrice}
+                    finalPrice={finalPrice}
+                    optionCustomers={optionCustomers}
+                    orderData={orderData}
+                    setOrderData={setOrderData}
+                    submitHandler={submitHandler}
+                />
+
+
+
+                {/* product table  */}
+                <div className="flex flex-col gap-4">
+                    <p className="text-blue-500 text-lg">Select products :</p>
+                    {
+                        filteredProducts.length > 0 &&
+                        <div>
+                            <table className="min-w-full  border border-gray-300 text-left overflow-x-auto">
+
+                                <thead className="bg-slate-800">
+                                    <tr>
+                                        <th className="py-2 px-4 border-b">S.No.</th>
+                                        <th className="py-2 px-4 border-b">Name</th>
+                                        <th className="py-2 px-4 border-b">Price (1 unit)</th>
+                                        <th className="py-2 px-4 border-b">Unit</th>
+                                        <th className="py-2 px-4 border-b">Area</th>
+                                        <th className="py-2 px-4 border-b">Quantity</th>
+                                        <th className="py-2 px-4 border-b">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {
+                                        filteredProducts.map((product, index) => {
+                                            return (
+                                                <tr key={product._id}>
+                                                    <td className="py-2 px-4 border-b">{index + 1}</td>
+                                                    <td className="py-2 px-4 border-b">{product.productName}</td>
+                                                    <td className="py-2 px-4 border-b">{product.price}</td>
+                                                    <td className="py-2 px-4 border-b">{product.unit}</td>
+                                                    <td className="py-2 px-4 border-b">
+                                                        {
+                                                            product.area ? product.area : "___"
+                                                        }
+                                                    </td>
+                                                    <td className="py-2 px-4 border-b">{product.quantity}</td>
+                                                    <td className="py-2 px-4 border-b">
+                                                        {
+                                                            product.area ? (product.area * product.quantity * product.price) : (product.quantity * product.price)
+                                                        }
+                                                    </td>
+                                                </tr>
+                                            )
+                                        })
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                </div>
+
+
+
+            </div >
+        </div >
     )
 }

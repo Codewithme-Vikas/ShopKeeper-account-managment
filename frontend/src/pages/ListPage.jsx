@@ -8,6 +8,7 @@ import ProductList from '../components/product/ProductList'
 import UpdateProduct from '../components/product/UpdateProduct';
 
 import OrderList from '../components/order/OrderList';
+import OrderDetail from '../components/order/OrderDetail';
 
 
 export default function ListPage() {
@@ -51,6 +52,10 @@ export default function ListPage() {
 
                 {
                     urlPath.includes("product") && urlPath.includes("update") && params?.id && <UpdateProduct id={params.id} />
+                }
+
+                {
+                    urlPath.includes("order") && urlPath.includes("detail") && params?.id && <OrderDetail id={params.id} />
                 }
 
 

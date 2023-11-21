@@ -2,22 +2,31 @@ const mongoose = require("mongoose");
 
 const orderSchema = new mongoose.Schema({
 
-    // products : [ { type : mongoose.Schema.Types.ObjectId , ref : "Product" } ],
+    invoiceNo : { type : String },
 
-    products : [ 
-        {
-            id : { type : mongoose.Schema.Types.ObjectId , ref : "Product"},
-            quantity : { type : Number , required : true }
-        }
-    ],
+    date : { type : Date , required : true },
 
     orderPrice   : { type  : Number },
 
-    // discount : {type : Number , default : 0 }
+    discount : {type : Number , default : 0 },
 
+    type  : { type : String , enum  : [ "Buy" , "Sell" ] , required : true },
+    
     customer : { type : mongoose.Schema.Types.ObjectId , ref : "Customer" },
 
-    type  : { type : String , enum  : [ "buy" , "sell" ] },
+    products : [ 
+        {
+            product : { type : mongoose.Schema.Types.ObjectId , ref : "Product" , required : true },
+            quantity : { type : Number , required : true },
+            height : { type : Number },
+            width : { type : Number }
+        }
+    ],
+
+    GST : { 
+        GST1 : { name : String , rate : Number },
+        GST2 : { name : String , rate : Number },
+    },
 
 },{
     timestamps : true,

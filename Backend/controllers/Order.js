@@ -1,16 +1,16 @@
 const Order = require("../models/Order");
 const Product = require("../models/Product");
 const Customer = require("../models/Customer");
-const Payment = require("../models/Payment");
 
 
 // ****************************Create Order******************************
-// products will be array of objects ( objects contain prodcut id and quantity )
+// products will be array of objects ( objects contain prodcut id , quantity, width and height )
+// GST will be object of two objects - GST1 AND GST2 : { name  , rate }
 exports.createOrder = async (req, res) => {
     try {
-        const { customerId, type, products, orderPrice, payAmount, discount = 0 } = req.body;
+        const { customerId, invoiceNo, date, type, products, orderPrice, GST, discount = 0, } = req.body;
 
-        if (!orderPrice || !customerId || !type || !products || payAmount < 0) {
+        if (!orderPrice || !customerId || !invoiceNo || !date || !type || !products) {
             return res.status(400).json({ success: false, message: "provide all information." });
         }
 
@@ -21,31 +21,47 @@ exports.createOrder = async (req, res) => {
             return res.status(400).json({ success: false, message: "There is no such cutomer" });
         }
 
+        // is products exists
+        await Promise.all(products.map(async (ele) => {
+            const isProductExits = await Product.findById(ele.product);
+            if (!isProductExits ) {
+                return res.status(400).json({ success: false, message: `There is no such product ${ele.product}` });
+            }
+            // if stock is less then sell quantity of product in sell type Order 
+            const isFail = ( type === "Sell" ) && ( isProductExits?.currentStock - ele.quantity < 0 )
+            if( isFail ){
+                return res.status(400).json({success : false , message : `Not enough stock of produt ${isProductExits.productName}`});
+            }
+        }));
+
+
+        // change the stock of the products
+        await Promise.all(products.map(async (ele) => {
+            const quantity = (type === "Sell") ? -ele.quantity : ele.quantity;
+            await Product.findByIdAndUpdate(ele.product, {
+                $inc: { currentStock: quantity }
+            });
+        }));
+
 
         // store order into DB
-        const orderPriceAfterDiscount = orderPrice - discount;
-
         const orderDoc = await Order.create({
-            products: products,
-            orderPrice: orderPriceAfterDiscount,
+            products,
+            orderPrice,
+            discount,
+            type,
+            invoiceNo,
+            date,
+            GST,
             customer: customerId,
-            type
         });
 
-        // create amount
-        let paymentDoc;
-        if (payAmount !== 0) {
-            paymentDoc = await Payment.create({
-                customer: customerId,
-                amount: payAmount
-            });
-        }
+
 
         // store orderId and paymentId into customer
         const customerDoc = await Customer.findByIdAndUpdate(customerId, {
             $push: {
                 orders: orderDoc._id,
-                ...( paymentDoc ? { payments: paymentDoc._id} : {} ),
             },
         }, { new: true });
 
@@ -54,7 +70,6 @@ exports.createOrder = async (req, res) => {
             success: true,
             message: "Order is created",
             orderDoc,
-            customerDoc
         });
 
     } catch (error) {
@@ -62,6 +77,45 @@ exports.createOrder = async (req, res) => {
         return res.status(400).json({
             success: false,
             message: "Failed to create order",
+            error: error.message
+        })
+    }
+};
+
+
+// ****************************Delete Order******************************
+exports.getOrder = async (req, res) => {
+    try {
+        const { id } = req.body;
+
+        if (!id) {
+            return res.status(400).json({ success: false, message: "Please provide id." });
+        }
+
+        // Is order exits
+        const orderDoc = await Order.findById(id)
+                                .populate({ path : "customer", select :"name address email accountType GSTNumber PAN"})
+                                .populate({
+                                    path : "products",
+                                    populate : { path : "product" }
+                                }).exec();
+
+        if (!orderDoc) {
+            return res.status(400).json({ success: false, message: "Order is not exists" });
+        }
+
+
+        return res.status(200).json({
+            success: true,
+            message: "Order is successfully fetched.",
+            orderDoc,
+        });
+
+    } catch (error) {
+        console.log(error, "Error in get order controller");
+        return res.status(400).json({
+            success: false,
+            message: "Failed to get order",
             error: error.message
         })
     }
@@ -118,13 +172,13 @@ exports.deleteOrder = async (req, res) => {
 exports.getAllBuyOrders = async (req, res) => {
     try {
 
-        const allBuyOrders = await Order.find({ type: "buy" })
-                                    .populate({ 
-                                        path : "products",
-                                        populate : { path : "id"  , select : "productName price"}
-                                    })
-                                    .populate({ path : "customer" , select : "name address phone"})
-                                    .exec();
+        const allBuyOrders = await Order.find({ type: "Buy" })
+            .populate({
+                path: "products",
+                populate: { path: "product", select: "productName price" }
+            })
+            .populate({ path: "customer", select: "name address phone" })
+            .exec();
 
 
         return res.status(200).json({
@@ -149,13 +203,13 @@ exports.getAllBuyOrders = async (req, res) => {
 exports.getAllSellOrders = async (req, res) => {
     try {
 
-        const allSellOrders = await Order.find({ type: "sell" })
-                                    .populate({ 
-                                        path : "products",
-                                        populate : { path : "id"  , select : "productName price"}
-                                    })
-                                    .populate({ path : "customer" , select : "name address phone"})
-                                    .exec();
+        const allSellOrders = await Order.find({ type: "Sell" })
+            .populate({
+                path: "products",
+                populate: { path: "product", select: "productName price" }
+            })
+            .populate({ path: "customer", select: "name address phone" })
+            .exec();
 
 
         return res.status(200).json({
@@ -180,13 +234,13 @@ exports.getAllSellOrders = async (req, res) => {
 exports.getCutomerAllOrders = async (req, res) => {
     try {
         const { customerId } = req.body;
-        
-        const customerAllOrders = await Customer.findById( customerId )
-                                    .populate({path  : "payments" , select : "createdAt amount"})
-                                    .exec();
 
-        if( !customerAllOrders ){
-            return res.status(400).json({ success : false , message : "Customer is not exists!"});
+        const customerAllOrders = await Customer.findById(customerId)
+            .populate({ path: "payments", select: "createdAt amount" })
+            .exec();
+
+        if (!customerAllOrders) {
+            return res.status(400).json({ success: false, message: "Customer is not exists!" });
         }
 
         return res.status(200).json({

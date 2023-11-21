@@ -8,7 +8,7 @@ export default function LoginPage() {
     const { setToken , setUserInfo } = useContext( UserContext );
     const navigate = useNavigate();
 
-    const [email, setEmail] = useState('');
+    const [name, setName] = useState('');
     const [password, setPassword] = useState('');
     const [accountType, setAccountType] = useState('Admin')
 
@@ -18,7 +18,7 @@ export default function LoginPage() {
         try {
             const response = await fetch("http://localhost:3000/api/v1/auth/login", {
                 method: 'POST',
-                body: JSON.stringify({ email, password, accountType }),
+                body: JSON.stringify({ name, password, accountType }),
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -53,13 +53,13 @@ export default function LoginPage() {
             <form onSubmit={loginHandler} className="flex flex-col gap-4 mt-6 items-start border rounded p-4 py-8">
 
                 <div className="flex gap-2 items-center justify-center">
-                    <label htmlFor="email">Email</label>
+                    <label htmlFor="name">Name</label>
                     <input
-                        type="email"
-                        name="email"
+                        type="text"
+                        name="name"
                         required
-                        value={email}
-                        onChange={e => setEmail(e.target.value)}
+                        value={name}
+                        onChange={e => setName(e.target.value)}
                         className="text-black p-2 rounded outline-none"
                     />
                 </div>

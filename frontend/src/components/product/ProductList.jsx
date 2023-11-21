@@ -66,6 +66,10 @@ export default function CustomerList() {
                             <th className="py-2 px-4 border-b">S.No.</th>
                             <th className="py-2 px-4 border-b">Name</th>
                             <th className="py-2 px-4 border-b">Price</th>
+                            <th className="py-2 px-4 border-b">Unit</th>
+                            <th className="py-2 px-4 border-b">Opening Stock</th>
+                            <th className="py-2 px-4 border-b">Current Stock</th>
+                            <th className="py-2 px-4 border-b">Type</th>
                             <th className="py-2 px-4 border-b flex gap-4 items-center">
                                 <p className="px-2 py-1 ">Action</p>
                             </th>
@@ -79,6 +83,10 @@ export default function CustomerList() {
                                         <td className="py-2 px-4 border-b">{index+1}</td>
                                         <td className="py-2 px-4 border-b">{product.productName}</td>
                                         <td className="py-2 px-4 border-b">{product.price}</td>
+                                        <td className="py-2 px-4 border-b">{product.unit}</td>
+                                        <td className="py-2 px-4 border-b">{product.openingStock}</td>
+                                        <td className="py-2 px-4 border-b">{product.currentStock}</td>
+                                        <td className="py-2 px-4 border-b">{product.type}</td>
                                         <td className="py-2 px-4 border-b flex gap-4 items-center">
                                             <Link to={`/product/update/${product._id}`} 
                                                 className="bg-blue-500 text-white px-2 py-1 rounded">

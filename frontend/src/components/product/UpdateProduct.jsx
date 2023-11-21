@@ -22,7 +22,7 @@ export default function UpdateProduct({ id }) {
 
         try {
             const productData = {
-                id , productName, price, type, unit, addStock
+                id , productName, price, unit, addStock
             }
             const response = await fetch(`http://localhost:3000/api/v1/product/update`, {
                 method: 'PUT',
@@ -36,7 +36,7 @@ export default function UpdateProduct({ id }) {
             const data = await response.json();
             if (data.success) {
                 toast.success("product updated successfully!");
-                return navigate("/product/read");
+                return navigate("/list/product");
             } else {
                 toast.error("Failed to update toast!")
                 return false;
@@ -97,17 +97,8 @@ export default function UpdateProduct({ id }) {
 
 
                 <div className="flex gap-2 items-center justify-center">
-                    <label htmlFor="type">Type</label>
-                    <select
-                        name="type"
-                        required
-                        className="p-2 px-4 rounded text-black outline-none"
-                        onChange={e => setType(e.target.value)}
-                        value={type}
-                    >
-                        <option value="Manufuture">Manufuture</option>
-                        <option value="Purchase">Purchase</option>
-                    </select>
+                    <p>Type : </p>
+                    <p className="p-2 px-4 bg-slate-600 rounded">{ type }</p>
                 </div>
 
                 <div className="flex gap-2 items-center justify-center">

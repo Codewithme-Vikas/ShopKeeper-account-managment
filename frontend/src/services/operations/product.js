@@ -32,11 +32,11 @@ export async function getProduct( productId ){
         if( data.success ){
             return data?.productDoc;
         }else{
-            console.log("can not get products");
+            console.log("can not get product");
             return false;
         }
     } catch (error) {
-        console.log(error , "Error in products data handler")
+        console.log(error , "Error in product data handler")
         return null;
     }
 }

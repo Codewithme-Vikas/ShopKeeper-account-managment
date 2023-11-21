@@ -34,7 +34,7 @@ export default function UpdateCustomer({ id }) {
             const data = await response.json();
             if (data.success) {
                 toast.success("Customer successfully updated!");
-                return navigate("/customer/read");
+                return navigate("/list/customer");
             } else {
                 toast.error(data.message)
                 return false;
