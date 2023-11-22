@@ -1,0 +1,13 @@
+@media print {
+    /* Styles for printing go here */
+    body * {
+        visibility: hidden;
+      }
+    
+      .print-section,
+      .print-section * {
+        visibility: visible;
+      }
+
+  }
+  

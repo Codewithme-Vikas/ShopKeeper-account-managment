@@ -9,7 +9,8 @@ export function UserContextProvider({ children }) {
 
     // const [ userInfo , setUserInfo ] = useState( { name : 'Vikas' , id : '3kdsjfkjs3i' } );
     const [userInfo, setUserInfo] = useState(null);
-    const [ token , setToken ] = useState( intialToken )
+    const [ token , setToken ] = useState( intialToken );
+
     const value = {
         userInfo,
         setUserInfo,
@@ -17,7 +18,7 @@ export function UserContextProvider({ children }) {
         setToken,
     }
     
-    console.log( token , 'inside usercontext');
+    // console.log( token , 'inside usercontext token');
     return (
         <UserContext.Provider value={value}>
             {children}

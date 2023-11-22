@@ -22,17 +22,24 @@ exports.createOrder = async (req, res) => {
         }
 
         // is products exists
+        let isNotExists;
         await Promise.all(products.map(async (ele) => {
             const isProductExits = await Product.findById(ele.product);
             if (!isProductExits ) {
-                return res.status(400).json({ success: false, message: `There is no such product ${ele.product}` });
+                isNotExists = true;
+                return;
             }
             // if stock is less then sell quantity of product in sell type Order 
             const isFail = ( type === "Sell" ) && ( isProductExits?.currentStock - ele.quantity < 0 )
             if( isFail ){
-                return res.status(400).json({success : false , message : `Not enough stock of produt ${isProductExits.productName}`});
+                isNotExists = true;
+                return;
             }
         }));
+
+        if( isNotExists ){
+            return res.status(400).json({success : false , message : `Product is not found or not enough stock`});            
+        }
 
 
         // change the stock of the products
