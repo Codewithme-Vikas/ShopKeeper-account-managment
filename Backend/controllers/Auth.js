@@ -4,7 +4,7 @@ require("dotenv").config();
 
 const User = require("../models/User");
 
-// ******************************singup ****************************************
+// ****************************** Singup ****************************************
 // Name will be primary key
 exports.signup = async (req, res) => {
     try {
@@ -58,7 +58,7 @@ exports.signup = async (req, res) => {
 }
 
 
-// ******************************singup ****************************************
+// ****************************** Login ****************************************
 exports.login = async (req, res) => {
     try {
         const { name, password } = req.body;
@@ -111,6 +111,26 @@ exports.login = async (req, res) => {
         return res.status(401).json({
             success: false,
             message: "Failed to login ",
+            error: error.message
+        })
+    }
+}
+
+// ****************************** LogOut ****************************************
+exports.logout = async (req, res) => {
+    try {
+
+        return res.status(200).cookie('token', "").json({
+            success: true,
+            message: "User is successfully logout.",
+        })
+
+
+    } catch (error) {
+        console.log(error, "Error in logout controller ");
+        return res.status(401).json({
+            success: false,
+            message: "Failed to logout",
             error: error.message
         })
     }

@@ -3,7 +3,7 @@ const express = require("express");
 const router = express.Router();
 
 // controllers
-const { login , signup } = require("../controllers/Auth");
+const { login , signup, logout } = require("../controllers/Auth");
 
 
 // **********************************Auth APIS************************************************
@@ -11,6 +11,8 @@ const { login , signup } = require("../controllers/Auth");
 router.post("/signup" , signup );
 
 router.post("/login" , login );
+
+router.get("/logout" , logout );
 
 // -------------------------------------------------------------------------------------------
 
