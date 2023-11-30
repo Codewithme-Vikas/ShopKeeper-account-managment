@@ -6,9 +6,10 @@ export const UserContext = createContext({});
 export function UserContextProvider({ children }) {
 
     const intialToken = localStorage.getItem("token") ? JSON.parse( localStorage.getItem("token") ) : null;
+    const user = localStorage.getItem("user") ? JSON.parse( localStorage.getItem("user"))  : null;
 
-    // const [ userInfo , setUserInfo ] = useState( { name : 'Vikas' , id : '3kdsjfkjs3i' } );
-    const [userInfo, setUserInfo] = useState(null);
+    
+    const [userInfo, setUserInfo] = useState( user );
     const [ token , setToken ] = useState( intialToken );
 
     const value = {
@@ -17,8 +18,8 @@ export function UserContextProvider({ children }) {
         token,
         setToken,
     }
+
     
-    // console.log( token , 'inside usercontext token');
     return (
         <UserContext.Provider value={value}>
             {children}

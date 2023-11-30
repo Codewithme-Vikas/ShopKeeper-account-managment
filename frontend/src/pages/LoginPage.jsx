@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react"
 import toast from "react-hot-toast";
 import { UserContext } from "../context/userContext";
-import { useNavigate } from "react-router-dom";
+import { json, useNavigate } from "react-router-dom";
 
 export default function LoginPage() {
 
@@ -28,9 +28,14 @@ export default function LoginPage() {
 
             const data = await response.json();
             if( data.success ){
-                const user = { name : data.userDoc.name, id : data.userDoc._id };
+                const user = { name : data.userDoc.name, id : data.userDoc._id , accountType : data.userDoc.accountType };
                 setUserInfo( user );
-                // setToken( localStorage.getItem("token" ) );
+                
+                localStorage.setItem("token", JSON.stringify(data?.token));
+                localStorage.setItem("user", JSON.stringify(user));
+                
+                setToken( localStorage.getItem("token") );
+
                 toast.success("Successfully login.")
                 return navigate("/");
             }else{
@@ -45,7 +50,6 @@ export default function LoginPage() {
             return null;
         }
     }
-
 
     return (
         <div className="mt-8 w-10/12 mx-auto">

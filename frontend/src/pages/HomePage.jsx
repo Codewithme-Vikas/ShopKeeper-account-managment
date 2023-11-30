@@ -9,12 +9,10 @@ export default function HomePage() {
     const navigate = useNavigate();
     const { userInfo } = useContext(UserContext);
 
-    console.log( userInfo , 'home page ')
-
-   
+       
 
     useEffect( ()=>{
-        if (!userInfo) {
+        if (!userInfo ) {
             navigate("/login");
         }
     },[]);

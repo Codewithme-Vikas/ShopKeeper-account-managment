@@ -98,12 +98,14 @@ exports.login = async (req, res) => {
         }
 
         userDoc.password = undefined; // hide password
-        
+       
+
         return res.status(200).cookie('token', token, options).json({
             success: true,
             message: "User is successfully loggedIn.",
-            userDoc: userDoc
-        })
+            userDoc: userDoc,
+            token : token
+        });
 
 
     } catch (error) {

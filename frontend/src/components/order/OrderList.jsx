@@ -41,7 +41,7 @@ export default function OrderList() {
             </div>
 
 
-            <p className="text-rose-600 text-lg my-2">{ isBuyOrderList ? "Buy Order List:" : "Sell Order List:"}</p>
+            <p className="text-rose-600 text-lg my-2">{isBuyOrderList ? "Buy Order List:" : "Sell Order List:"}</p>
 
             <div>
                 <table className="min-w-full  border border-gray-300 text-left overflow-x-auto">
@@ -49,31 +49,38 @@ export default function OrderList() {
                     <thead className="bg-slate-800">
                         <tr>
                             <th className="py-2 px-4 border-b">S.No.</th>
+                            <th className="py-2 px-4 border-b">Invoice No.</th>
                             <th className="py-2 px-4 border-b">Customer</th>
                             <th className="py-2 px-4 border-b">Customer address</th>
-                            <th className="py-2 px-4 border-b">createdAt</th>
+                            <th className="py-2 px-4 border-b">Date</th>
                             <th className="py-2 px-4 border-b">OrderPrice</th>
                             <th className="py-2 px-4 border-b">Products : Quantity</th>
                         </tr>
                     </thead>
                     <tbody>
                         {
-                            ( isBuyOrderList ? allBuyOrders : allSellOrders ).map((order, index) => {
+                            (isBuyOrderList ? allBuyOrders : allSellOrders).map((order, index) => {
                                 return (
                                     <tr key={order._id}>
                                         <td className="py-2 px-4 border-b">{index + 1}</td>
+                                        <td className="py-2 px-4 border-b">
+                                            <Link to={`/order/detail/${order._id}`} className="hover:underline"
+                                            >
+                                                {order?.invoiceNo}
+                                            </Link>
+                                        </td>
                                         <td className="py-2 px-4 border-b">{order?.customer.name}</td>
                                         <td className="py-2 px-4 border-b">{order?.customer.address?.state}</td>
-                                        <td className="py-2 px-4 border-b">{order?.createdAt}</td>
+                                        <td className="py-2 px-4 border-b">{new Date(order.date).toLocaleDateString()}</td>
                                         <td className="py-2 px-4 border-b">{order?.orderPrice}</td>
                                         <td className="py-2 px-4 border-b">
-                                        {
-                                            order?.products.map( (ele)=>(
-                                                <p key={ele._id }>{ ele.product?.productName} : {ele.quantity}</p>
-                                            ))
-                                        }
+                                            {
+                                                order?.products.map((ele) => (
+                                                    <p key={ele._id}>{ele.product?.productName} : {ele.quantity}</p>
+                                                ))
+                                            }
                                         </td>
-                                        
+
                                     </tr>
                                 )
                             })

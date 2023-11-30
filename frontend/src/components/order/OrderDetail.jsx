@@ -2,10 +2,12 @@ import { useContext, useEffect, useState } from "react";
 
 import { UserContext } from '../../context/userContext'
 import { getOrder } from '../../services/operations/order'
+import { useNavigate } from "react-router-dom";
 
 
 export default function OrderDetail({ id }) {
 
+    const navigate = useNavigate();
     const [order, setOrder] = useState('');
     const { userInfo } = useContext(UserContext);
 
@@ -33,12 +35,24 @@ export default function OrderDetail({ id }) {
     return (
         <div>
 
-            <button
-                onClick={printHanlder}
-                className="rounded p-2 px-4 bg-rose-500 "
-            >
-                Print
-            </button>
+            <div className="flex gap-6">
+                <button
+                    onClick={printHanlder}
+                    className="rounded p-2 px-4 bg-rose-500 "
+                >
+                    Print
+                </button>
+
+                <button
+                    onClick={() => navigate(-1)}
+                    className="rounded p-2 px-4 bg-blue-500 "
+                >
+                    Go back
+                </button>
+
+
+            </div>
+
 
             <div className="print-section max-w-xl mx-auto mt-8 p-4 border shadow-md">
                 <div className="text-3xl font-bold mb-4">{userInfo?.name || "MetaStar Printers "}</div>

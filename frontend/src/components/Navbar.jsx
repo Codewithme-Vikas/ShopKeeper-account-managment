@@ -1,8 +1,15 @@
-import { Link } from "react-router-dom"
+import { useContext } from "react"
+import { Link, useNavigate } from "react-router-dom"
+
+import { UserContext } from "../context/userContext"
 import { navLinks } from "../data/navLinks"
 
+import { logout } from "../services/operations/auth"
 
 export default function Navbar() {
+
+    const navigate = useNavigate();
+    const { setUserInfo, setToken } = useContext(UserContext);
 
 
     return (
@@ -24,7 +31,21 @@ export default function Navbar() {
                     {
                         navLinks.map((link, index) => {
                             return (
-                                <Link key={index} to={link.path}>{link.title}</Link>
+
+                                link.path ? 
+                                (
+                                    <Link key={index} to={link.path}>{link.title}</Link>
+                                ) : (
+                                    <button key={index}
+                                        
+                                    onClick={() => link.title === "Logout" && logout(setUserInfo, setToken, navigate)}
+                                    
+                                        className="ms-5"
+                                    >
+                                        {link.title}
+                                    </button>
+                                )
+
                             )
                         })
                     }

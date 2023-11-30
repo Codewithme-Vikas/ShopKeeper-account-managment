@@ -50,7 +50,7 @@ export default function CreateProduct() {
     return (
         <div>
 
-            <p className="text-lg text-rose-500 my-1">Create new customer</p>
+            <p className="text-lg text-rose-500 my-1">Create new product</p>
 
             <form onSubmit={ submitHandler   }  className="flex gap-6 flex-wrap items-center my-4 border py-8 px-4">
 

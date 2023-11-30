@@ -10,5 +10,9 @@ export const navLinks = [
     {
         title : "List",
         path : "/list"
+    },
+    {
+        title : "Logout",
+        path : null
     }
 ];
