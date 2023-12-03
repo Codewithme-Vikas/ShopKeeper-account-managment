@@ -55,11 +55,11 @@ export default function CreateOrder() {
 
         try {
 
-            if( !selectedProducts.length ){
+            if (!selectedProducts.length) {
                 toast.error("Select at least one product");
                 return;
             }
-            
+
             orderData["products"] = selectedProducts;
             orderData["type"] = isSellOrder ? "Sell" : "Buy";
             orderData["orderPrice"] = finalPrice;
@@ -148,6 +148,7 @@ export default function CreateOrder() {
 
         <div className="flex flex-col gap-8">
 
+            {/* buy and sell button */}
             <div className="flex gap-6">
                 <p className="text-lg italic text-blue-400">Order Type :</p>
 
@@ -158,7 +159,7 @@ export default function CreateOrder() {
                         setSelectedProducts([])
                     }}
                     className="bg-slate-600 p-2 px-6 rounded outline-none hover:bg-slate-700 
-                        disabled:opacity-70 disabled:cursor-not-allowed"
+                        disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                     Sell
                 </button>
@@ -170,7 +171,7 @@ export default function CreateOrder() {
                         setSelectedProducts([])
                     }}
                     className="bg-blue-800 p-2 px-6 rounded outline-none hover:bg-blue-700
-                        disabled:opacity-70 disabled:cursor-not-allowed"
+                        disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                     Buy
                 </button>
@@ -178,9 +179,9 @@ export default function CreateOrder() {
             </div>
 
 
-            <div className="border flex flex-col gap-8 p-6 pb-10">
+            <div className="max-w-5xl m-auto flex flex-col gap-8 p-8 mb-6 shadow-md shadow-slate-500">
 
-                <p className="text-lg text-rose-500">
+                <p className="text-xl text-rose-500">
                     {`Add new ${isSellOrder ? "Sell" : "Buy"} order...`}
                 </p>
 
@@ -203,10 +204,12 @@ export default function CreateOrder() {
 
 
                 {/* product table  */}
-                <div className="flex flex-col gap-4">
-                    <p className="text-blue-500 text-lg">Select products :</p>
-                    {
-                        filteredProducts.length > 0 &&
+
+                {
+                    filteredProducts.length > 0 &&
+                    
+                    <div className="flex flex-col gap-4">
+                        <p className="text-blue-500 text-lg">Select products :</p>
                         <div>
                             <table className="min-w-full  border border-gray-300 text-left overflow-x-auto">
 
@@ -248,8 +251,8 @@ export default function CreateOrder() {
                                 </tbody>
                             </table>
                         </div>
-                    }
-                </div>
+                    </div>
+                }
 
 
 

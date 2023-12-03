@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const orderSchema = new mongoose.Schema({
 
-    invoiceNo : { type : String },
+    invoiceNo : { type : String, required : true, unqiue : true },
 
     date : { type : Date , required : true },
 
@@ -12,7 +12,7 @@ const orderSchema = new mongoose.Schema({
 
     type  : { type : String , enum  : [ "Buy" , "Sell" ] , required : true },
     
-    customer : { type : mongoose.Schema.Types.ObjectId , ref : "Customer" },
+    customer : { type : mongoose.Schema.Types.ObjectId , ref : "Customer" , required : true},
 
     products : [ 
         {

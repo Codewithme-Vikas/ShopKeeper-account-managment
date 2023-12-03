@@ -3,6 +3,7 @@ import { Link, useLocation, useParams } from 'react-router-dom'
 import CreateOrder from '../components/order/CreateOrder';
 import CreateProduct from '../components/product/CreateProduct';
 import CreateCustomer from '../components/customer/CreateCustomer';
+import CreatePayment from '../components/CreatePayment';
 
 export default function AddPage() {
 
@@ -18,6 +19,7 @@ export default function AddPage() {
                     <Link to="/add/customer"> Customer +</Link>
                     <Link to="/add/product" > Product +</Link>
                     <Link to="/add/order" > Order +</Link>
+                    <Link to="/add/payment" > Payment +</Link>
                 </ul>
             </div>
 
@@ -33,6 +35,10 @@ export default function AddPage() {
 
                 {
                     params.type === "customer" && <CreateCustomer />
+                }
+
+                {
+                    params.type === "payment" && <CreatePayment />
                 }
 
             </div>

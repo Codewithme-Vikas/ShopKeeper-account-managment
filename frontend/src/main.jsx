@@ -33,10 +33,10 @@ const router = createBrowserRouter([
                         path : "list/:type",
                         element : <ListPage/>
                     },
-                    {
-                        path : "add",
-                        element : <AddPage/>
-                    },
+                    // {
+                    //     path : "add",
+                    //     element : <AddPage/>
+                    // },
                     {
                         path : "add/:type",
                         element : <AddPage/>

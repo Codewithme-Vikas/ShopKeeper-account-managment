@@ -7,16 +7,19 @@ import { FaTrashAlt } from "react-icons/fa";
 import toast from "react-hot-toast";
 
 import { getAllProducts } from "../../services/operations/product"
+import FilterItems from "../FilterItems";
 
 
 export default function CustomerList() {
 
     const [ products , setProducts ] = useState( [] );
+    const [ filterProducts , setFilterProducts ] = useState([]);
 
     async function fetchAllProducts(){
         const productsData = await getAllProducts();
         if( productsData ){
             setProducts( productsData );
+            setFilterProducts( productsData )
         }
         return;
     }
@@ -54,9 +57,16 @@ export default function CustomerList() {
     },[]);
 
     return (
-        <div>
+        <div className="flex flex-col gap-8">
 
             <p className="text-rose-600 text-lg">Product List</p>
+
+
+            <FilterItems
+                searchItems = { products }
+                setSearchItems = { setFilterProducts }
+            />
+            
 
             <div>
                 <table className="min-w-full  border border-gray-300 text-left overflow-x-auto">
@@ -77,7 +87,7 @@ export default function CustomerList() {
                     </thead>
                     <tbody>
                         {
-                            products.map((product, index) => {
+                            filterProducts.map((product, index) => {
                                 return (
                                     <tr key={index}>
                                         <td className="py-2 px-4 border-b">{index+1}</td>

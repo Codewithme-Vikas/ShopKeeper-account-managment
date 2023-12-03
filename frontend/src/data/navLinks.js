@@ -5,7 +5,7 @@ export const navLinks = [
     },
     {
         title : "Add",
-        path : "/add"
+        path : "/add/order"
     },
     {
         title : "List",
