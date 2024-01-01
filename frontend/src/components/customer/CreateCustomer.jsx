@@ -69,7 +69,7 @@ export default function CreateCustomer() {
                 {/* name and email */}
                 <div className="flex gap-12 w-full items-center justify-between">
 
-                    <div className="flex flex-col w-full gap-2 ">
+                    <div className="flex flex-col w-full gap-2 relative">
                         <label htmlFor="name" className="text-slate-500 after:content-['*'] after:ml-0.5 after:text-red-500">Customer Name</label>
                         <input
                             type="text"
@@ -80,22 +80,21 @@ export default function CreateCustomer() {
                             onChange={changeHandler}
                             value={formData.name}
                         />
+                        <p className="absolute text-red-500 text-sm left-0 top-[100%]">
+                            Username must be unique.
+                        </p>
                     </div>
 
-                    <div className="flex flex-col w-full gap-2 relative">
-                        <label htmlFor="email" className="text-slate-500 after:content-['*'] after:ml-0.5 after:text-red-500">Email</label>
+                    <div className="flex flex-col w-full gap-2">
+                        <label htmlFor="email" className="text-slate-500">Email</label>
                         <input
                             type="email"
                             name="email"
-                            required
                             className="p-[6px] rounded text-slate-800 bg-white outline-none"
                             placeholder="customer@email.com"
                             onChange={changeHandler}
                             value={formData.email}
                         />
-                        <p className="absolute text-red-500 text-sm left-0 top-[100%]">
-                            Email must be unique for each customer
-                        </p>
                     </div>
                 </div>
 
@@ -106,7 +105,7 @@ export default function CreateCustomer() {
 
                         {/* phone */}
                         <div className="flex flex-col gap-1">
-                            <label htmlFor="phone" className="text-slate-500">Phone</label>
+                            <label htmlFor="phone" className="text-slate-500 after:content-['*'] after:ml-0.5 after:text-red-500">Phone</label>
                             <input
                                 type="tel"
                                 name="phone"
@@ -145,7 +144,7 @@ export default function CreateCustomer() {
 
                     </div>
 
-
+                    {/* address */}
                     <div className="flex flex-col w-full gap-4">
 
 

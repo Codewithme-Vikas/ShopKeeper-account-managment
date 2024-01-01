@@ -21,7 +21,7 @@ export default function CreateOrder() {
     const [products, setProducts] = useState([]);
 
     const [optionCustomers, setOptionCustomers] = useState([]);
-    const [optionProducts, setOptionProducts] = useState([]);
+    // const [optionProducts, setOptionProducts] = useState([]);
 
     const [selectedProducts, setSelectedProducts] = useState([]);
 
@@ -29,7 +29,7 @@ export default function CreateOrder() {
     const [finalPrice, setFinalPrice] = useState(0)
 
     const [orderData, setOrderData] = useState({
-        customerId: "", discount: 0, invoiceNo: "", date: "", enterPrice: "",
+        customerId: "", discount: 0, invoiceNo: "", enterPrice: "",
         gst1: "", gst2: "", gst1Rate: 0, gst2Rate: 0
     });
 
@@ -47,8 +47,6 @@ export default function CreateOrder() {
                 area: selectedProduct.width * selectedProduct.height,
             };
         })
-
-
 
     async function submitHandler(e) {
         e.preventDefault();
@@ -116,13 +114,6 @@ export default function CreateOrder() {
         setOptionCustomers(customers.filter(customer => customer.accountType === customerType));
     }, [isSellOrder, customers])
 
-    useEffect(() => {
-        if (!isSellOrder) {
-            setOptionProducts(products.filter(product => product.type === "Purchase"));
-        } else {
-            setOptionProducts(products)
-        }
-    }, [isSellOrder, products]);
 
     useEffect(() => {
         let totalPrice = 0;
@@ -159,7 +150,7 @@ export default function CreateOrder() {
                         setSelectedProducts([])
                     }}
                     className="bg-slate-600 p-2 px-6 rounded outline-none hover:bg-slate-700 
-                        disabled:opacity-50 disabled:cursor-not-allowed"
+                        disabled:opacity-50 disabled:cursor-not-allowed z-[-1]"
                 >
                     Sell
                 </button>
@@ -179,82 +170,91 @@ export default function CreateOrder() {
             </div>
 
 
-            <div className="max-w-5xl m-auto flex flex-col gap-8 p-8 mb-6 shadow-md shadow-slate-500">
+            <div className="max-w-4xl m-auto flex flex-col gap-8 p-8 mb-6 shadow-md shadow-slate-500">
 
                 <p className="text-xl text-rose-500">
                     {`Add new ${isSellOrder ? "Sell" : "Buy"} order...`}
                 </p>
 
-                <SelectProduct
-                    isSellOrder={isSellOrder}
-                    products={optionProducts}
-                    setSelectedProducts={setSelectedProducts}
-                />
-
-
-                <CreateOrderForm
-                    totalPrice={totalPrice}
-                    finalPrice={finalPrice}
-                    optionCustomers={optionCustomers}
-                    orderData={orderData}
-                    setOrderData={setOrderData}
-                    submitHandler={submitHandler}
-                />
-
-
-
-                {/* product table  */}
-
-                {
-                    filteredProducts.length > 0 &&
+                <div className=" gap-4">
                     
-                    <div className="flex flex-col gap-4">
-                        <p className="text-blue-500 text-lg">Select products :</p>
-                        <div>
-                            <table className="min-w-full  border border-gray-300 text-left overflow-x-auto">
+                    {/* form */}
+                    <div className="flex-[50%]">
+                        <SelectProduct
+                            products={products}
+                            setSelectedProducts={setSelectedProducts}
+                        />
 
-                                <thead className="bg-slate-800">
-                                    <tr>
-                                        <th className="py-2 px-4 border-b">S.No.</th>
-                                        <th className="py-2 px-4 border-b">Name</th>
-                                        <th className="py-2 px-4 border-b">Price (1 unit)</th>
-                                        <th className="py-2 px-4 border-b">Unit</th>
-                                        <th className="py-2 px-4 border-b">Area</th>
-                                        <th className="py-2 px-4 border-b">Quantity</th>
-                                        <th className="py-2 px-4 border-b">Total</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {
-                                        filteredProducts.map((product, index) => {
-                                            return (
-                                                <tr key={product._id}>
-                                                    <td className="py-2 px-4 border-b">{index + 1}</td>
-                                                    <td className="py-2 px-4 border-b">{product.productName}</td>
-                                                    <td className="py-2 px-4 border-b">{product.price}</td>
-                                                    <td className="py-2 px-4 border-b">{product.unit}</td>
-                                                    <td className="py-2 px-4 border-b">
-                                                        {
-                                                            product.area ? product.area : "___"
-                                                        }
-                                                    </td>
-                                                    <td className="py-2 px-4 border-b">{product.quantity}</td>
-                                                    <td className="py-2 px-4 border-b">
-                                                        {
-                                                            product.area ? (product.area * product.quantity * product.price) : (product.quantity * product.price)
-                                                        }
-                                                    </td>
-                                                </tr>
-                                            )
-                                        })
-                                    }
-                                </tbody>
-                            </table>
-                        </div>
+
+                        <CreateOrderForm
+                            totalPrice={totalPrice}
+                            finalPrice={finalPrice}
+                            optionCustomers={optionCustomers}
+                            orderData={orderData}
+                            setOrderData={setOrderData}
+                            submitHandler={submitHandler}
+                        />
+
                     </div>
-                }
 
 
+
+                    {/* table of products */}
+                    <div className="flex-[50%]">
+
+                        {
+                            filteredProducts.length > 0 &&
+
+                            <div className="flex flex-col gap-4">
+                                <p className="text-blue-500 text-lg">Select products :</p>
+                                <div>
+                                    <table className="min-w-full  border border-gray-300 text-left overflow-x-auto">
+
+                                        <thead className="bg-slate-800">
+                                            <tr>
+                                                <th className="py-2 px-4 border-b">S.No.</th>
+                                                <th className="py-2 px-4 border-b">Name</th>
+                                                <th className="py-2 px-4 border-b">Price (1 unit)</th>
+                                                <th className="py-2 px-4 border-b">Unit</th>
+                                                <th className="py-2 px-4 border-b">Area</th>
+                                                <th className="py-2 px-4 border-b">Quantity</th>
+                                                <th className="py-2 px-4 border-b">Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {
+                                                filteredProducts.map((product, index) => {
+                                                    return (
+                                                        <tr key={product._id}>
+                                                            <td className="py-2 px-4 border-b">{index + 1}</td>
+                                                            <td className="py-2 px-4 border-b">{product.productName}</td>
+                                                            <td className="py-2 px-4 border-b">{product.price}</td>
+                                                            <td className="py-2 px-4 border-b">{product.unit}</td>
+                                                            <td className="py-2 px-4 border-b">
+                                                                {
+                                                                    product.area ? product.area : "___"
+                                                                }
+                                                            </td>
+                                                            <td className="py-2 px-4 border-b">{product.quantity}</td>
+                                                            <td className="py-2 px-4 border-b">
+                                                                {
+                                                                    product.area ? (product.area * product.quantity * product.price) : (product.quantity * product.price)
+                                                                }
+                                                            </td>
+                                                        </tr>
+                                                    )
+                                                })
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        }
+
+                    </div>
+
+
+                </div>
 
             </div >
         </div >

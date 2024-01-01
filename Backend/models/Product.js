@@ -7,7 +7,7 @@ const productSchema = new mongoose.Schema({
 
     unit : { type : String , required : true },
 
-    type : { type : String ,  enum : ["Purchase" , "Manufuture"] , required : true },
+    // type : { type : String ,  enum : ["Purchase" , "Manufuture"] , required : true },
     
     price : { type : Number },
 

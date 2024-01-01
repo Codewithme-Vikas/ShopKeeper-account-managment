@@ -4,13 +4,13 @@ const Customer = require("../models/Customer");
 
 
 // ****************************Create Order******************************
-// products will be array of objects ( objects contain prodcut id , quantity, width and height )
+// products will be array of objects ( objects contain prodcut name , quantity, width and height )
 // GST will be object of two objects - GST1 AND GST2 : { name  , rate }
 exports.createOrder = async (req, res) => {
     try {
-        const { customerId, invoiceNo, date, type, products, orderPrice, GST, discount = 0, } = req.body;
+        const { customerId, invoiceNo, type, products, orderPrice, GST, discount = 0, } = req.body;
 
-        if (!orderPrice || !customerId || !invoiceNo || !date || !type || !products) {
+        if (!orderPrice || !customerId || !invoiceNo || !type || !products) {
             return res.status(400).json({ success: false, message: "provide all information." });
         }
 
@@ -24,28 +24,28 @@ exports.createOrder = async (req, res) => {
         // is products exists
         let isNotExists;
         await Promise.all(products.map(async (ele) => {
-            const isProductExits = await Product.findById(ele.product);
+            const isProductExits = await Product.findById( ele.product);
             if (!isProductExits ) {
                 isNotExists = true;
                 return;
             }
-            // if stock is less then sell quantity of product in sell type Order 
-            const isFail = ( type === "Sell" ) && ( isProductExits?.currentStock - ele.quantity < 0 )
-            if( isFail ){
-                isNotExists = true;
-                return;
-            }
+            // // if stock is less then sell quantity of product in sell type Order 
+            // const isFail = ( type === "Sell" ) && ( isProductExits?.currentStock - ele.quantity < 0 )
+            // if( isFail ){
+            //     isNotExists = true;
+            //     return;
+            // }
         }));
 
         if( isNotExists ){
-            return res.status(400).json({success : false , message : `Product is not found or not enough stock`});            
+            return res.status(400).json({success : false , message : `Product is not found.`});            
         }
 
 
         // change the stock of the products
         await Promise.all(products.map(async (ele) => {
             const quantity = (type === "Sell") ? -ele.quantity : ele.quantity;
-            await Product.findByIdAndUpdate(ele.product, {
+            await Product.findByIdAndUpdate( ele.product, {
                 $inc: { currentStock: quantity }
             });
         }));
@@ -58,7 +58,6 @@ exports.createOrder = async (req, res) => {
             discount,
             type,
             invoiceNo,
-            date,
             GST,
             customer: customerId,
         });
@@ -101,7 +100,7 @@ exports.getOrder = async (req, res) => {
 
         // Is order exits
         const orderDoc = await Order.findById(id)
-                                .populate({ path : "customer", select :"name address email accountType GSTNumber PAN"})
+                                .populate({ path : "customer", select :"name address phone email accountType GSTNumber PAN"})
                                 .populate({
                                     path : "products",
                                     populate : { path : "product" }
@@ -172,7 +171,6 @@ exports.deleteOrder = async (req, res) => {
         })
     }
 };
-
 
 
 // ****************************Get All buying Orders******************************

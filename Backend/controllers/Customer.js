@@ -2,20 +2,20 @@ const Customer = require("../models/Customer");
 
 
 // ***************************Create Customer************************************
-// Email will be primary key
+
 // address = { state : "" , district : "", city : "" }
 exports.createCustomer = async (req, res) => {
     try {
         const { name , email , phone , address , GSTNumber , PAN , accountType } = req.body;
 
-        if( !name || !accountType || !email  ){
+        if( !name || !accountType || !phone ){
             return res.status(400).json({ success : false , message : "Please provide all required information!" });
         }
 
         //Is already exits
-        const isCustomerExits = await Customer.findOne({ email : email } );
+        const isCustomerExists = await Customer.findOne({ name : name  } );
 
-        if( isCustomerExits?.name === name && isCustomerExits?.phone === phone ){
+        if( isCustomerExists ){
             return res.status(400).json({ success : false , message : "Customer is already exits!" });
         }
         

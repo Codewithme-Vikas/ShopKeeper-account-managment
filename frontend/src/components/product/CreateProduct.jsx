@@ -4,13 +4,13 @@ import { useNavigate } from 'react-router-dom'
 import toast from "react-hot-toast";
 
 import { productUnits } from "../../data/productUnits"
+
 export default function CreateProduct() {
 
     const navigate = useNavigate();
 
     const [productName, setProductName] = useState("");
     const [price, setPrice] = useState(0);
-    const [type, setType] = useState("Manufuture");
     const [unit, setUnit] = useState("");
     const [openingStock, setOpeningStock] = useState(0);
 
@@ -19,7 +19,7 @@ export default function CreateProduct() {
 
         try {
             const productData = {
-                productName, price, type, unit, openingStock,
+                productName, price, unit, openingStock,
                 currentStock: openingStock
             }
             const response = await fetch(`http://localhost:3000/api/v1/product/create`, {
@@ -121,22 +121,6 @@ export default function CreateProduct() {
                         />
                     </div>
 
-                </div>
-
-
-                {/* type */}
-                <div className="flex w-full flex-col gap-1">
-                    <label htmlFor="type" className="after:content-['*'] after:ml-0.5 after:text-red-500">Type</label>
-                    <select
-                        name="type"
-                        required
-                        className="p-[6px] px-4 rounded text-black outline-none"
-                        onChange={e => setType(e.target.value)}
-                        value={type}
-                    >
-                        <option value="Manufuture">Manufuture</option>
-                        <option value="Purchase">Purchase</option>
-                    </select>
                 </div>
 
 

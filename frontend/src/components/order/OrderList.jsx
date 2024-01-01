@@ -71,12 +71,12 @@ export default function OrderList() {
                                         </td>
                                         <td className="py-2 px-4 border-b">{order?.customer.name}</td>
                                         <td className="py-2 px-4 border-b">{order?.customer.address?.state}</td>
-                                        <td className="py-2 px-4 border-b">{new Date(order.date).toLocaleDateString()}</td>
+                                        <td className="py-2 px-4 border-b">{new Date(order.createdAt).toLocaleDateString()}</td>
                                         <td className="py-2 px-4 border-b">{order?.orderPrice}</td>
                                         <td className="py-2 px-4 border-b">
                                             {
                                                 order?.products.map((ele) => (
-                                                    <p key={ele._id}>{ele.product?.productName} : {ele.quantity}</p>
+                                                    <p key={ele._id}>{ele.productName} : {ele.quantity}</p>
                                                 ))
                                             }
                                         </td>

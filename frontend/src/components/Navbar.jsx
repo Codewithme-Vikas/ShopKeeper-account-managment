@@ -5,6 +5,7 @@ import { UserContext } from "../context/userContext"
 import { navLinks } from "../data/navLinks"
 
 import { logout } from "../services/operations/auth"
+import logo from "../assets/image/logo.png"
 
 export default function Navbar() {
 
@@ -13,14 +14,13 @@ export default function Navbar() {
 
 
     return (
-        <div className="bg-slate-800">
+        <div className="bg-slate-800 sticky top-0">
 
             <div className="w-10/12 mx-auto py-3 flex justify-between items-center gap-2">
 
                 {/* website logo */}
                 <div className="text-xl">
-                    {/* <image src/> */}
-                    Monitor
+                    <img src={logo} className="w-[90px]"/>
                 </div>
 
 

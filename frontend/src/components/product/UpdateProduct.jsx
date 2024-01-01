@@ -12,7 +12,6 @@ export default function UpdateProduct({ id }) {
 
     const [productName, setProductName] = useState("");
     const [price, setPrice] = useState(0);
-    const [type, setType] = useState("");
     const [unit, setUnit] = useState("");
     const [currentStock, setCurrentStock] = useState(0);
     const [addStock, setAddStock] = useState(0);
@@ -22,11 +21,11 @@ export default function UpdateProduct({ id }) {
 
         try {
             const productData = {
-                id , productName, price, unit, addStock
+                id, productName, price, unit, addStock
             }
             const response = await fetch(`http://localhost:3000/api/v1/product/update`, {
                 method: 'PUT',
-                body: JSON.stringify( productData ),
+                body: JSON.stringify(productData),
                 headers: {
                     'Content-Type': 'application/json'
                 },
@@ -54,7 +53,6 @@ export default function UpdateProduct({ id }) {
         if (productData) {
             setPrice(productData.price);
             setProductName(productData.productName)
-            setType(productData?.type);
             setUnit(productData?.unit);
             setCurrentStock(productData?.currentStock);
         }
@@ -72,6 +70,7 @@ export default function UpdateProduct({ id }) {
 
             <form onSubmit={submitHandler} className="flex gap-6 flex-wrap items-center my-4 border py-8 px-4">
 
+                {/* name */}
                 <div className="flex gap-2 items-center justify-center">
                     <label htmlFor="productName">Name</label>
                     <input
@@ -83,6 +82,7 @@ export default function UpdateProduct({ id }) {
                     />
                 </div>
 
+                {/* price */}
                 <div className="flex gap-2 items-center justify-center">
                     <label htmlFor="price">Price</label>
                     <input
@@ -95,12 +95,7 @@ export default function UpdateProduct({ id }) {
                     />
                 </div>
 
-
-                <div className="flex gap-2 items-center justify-center">
-                    <p>Type : </p>
-                    <p className="p-2 px-4 bg-slate-600 rounded">{ type }</p>
-                </div>
-
+                {/* unit */}
                 <div className="flex gap-2 items-center justify-center">
                     <label htmlFor="unit">Unit</label>
                     <select
@@ -120,6 +115,7 @@ export default function UpdateProduct({ id }) {
                     </select>
                 </div>
 
+                {/* current stock */}
                 <div className="flex gap-2 items-center justify-center">
                     <label htmlFor="currentStock">Current Stock</label>
                     <input
@@ -134,21 +130,19 @@ export default function UpdateProduct({ id }) {
                 </div>
 
 
-                {type === "Manufuture" &&
 
-                    <div className="flex gap-2 items-center justify-center">
-                        <label htmlFor="addStock">Add Stock</label>
-                        <input
-                            type="number"
-                            name="addStock"
-                            required
-                            className="p-1 rounded text-black outline-none"
-                            onChange={e => setAddStock(e.target.value)}
-                            value={addStock}
-                        />
-                    </div>
-                }
-
+                {/* add stock */}
+                <div className="flex gap-2 items-center justify-center">
+                    <label htmlFor="addStock">Add Stock</label>
+                    <input
+                        type="number"
+                        name="addStock"
+                        required
+                        className="p-1 rounded text-black outline-none"
+                        onChange={e => setAddStock(e.target.value)}
+                        value={addStock}
+                    />
+                </div>
 
 
 

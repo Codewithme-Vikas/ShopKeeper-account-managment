@@ -12,6 +12,8 @@ import LoginPage from './pages/LoginPage.jsx'
 import { UserContextProvider } from './context/userContext.jsx'
 import ListPage from './pages/ListPage.jsx'
 import AddPage from './pages/AddPage.jsx'
+import ResetPassword from './pages/ResetPassword.jsx'
+import ResetPasswordToken from './pages/ResetPasswordToken.jsx'
 
 
 const router = createBrowserRouter([
@@ -66,6 +68,14 @@ const router = createBrowserRouter([
             {
                 path: "login",
                 element: <LoginPage />
+            },
+            {
+                path : "reset-password",
+                element : <ResetPasswordToken/>
+            },
+            {
+                path : ":id/update-password/:token",
+                element : <ResetPassword/>
             },
         ]
     }

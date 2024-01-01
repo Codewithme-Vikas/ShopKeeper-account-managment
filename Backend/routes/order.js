@@ -20,7 +20,7 @@ router.get("/getAllSellOrders" , getAllSellOrders );
 
 router.post("/getCutomerAllOrdres" , getCutomerAllOrders );
 
-router.post("/delete" , deleteOrder );
+// router.post("/delete" , deleteOrder );
 
 // -----------------------------------------------------------------------------------------
 

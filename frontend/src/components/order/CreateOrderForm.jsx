@@ -20,7 +20,7 @@ export default function CreateOrderForm({ totalPrice, finalPrice, optionCustomer
 
 
     return (
-        <form onSubmit={submitHandler} className="flex flex-col gap-12">
+        <form onSubmit={submitHandler} className="flex flex-col  gap-12">
 
 
             <div className="flex items-center gap-3 flex-wrap">
@@ -49,11 +49,11 @@ export default function CreateOrderForm({ totalPrice, finalPrice, optionCustomer
                 </div>
 
 
-                {/* invoice no and date */}
+                {/* invoice no */}
                 <div className="flex gap-12 w-full">
 
-                    <div className="flex flex-col gap-1 w-full">
-                        <label htmlFor="invoiceNo">Invoice No.</label>
+                    <div className="flex flex-col gap-1 w-full ">
+                        <label htmlFor="invoiceNo" className="after:content-['*'] after:ml-0.5 after:text-red-500">Invoice No.</label>
                         <input
                             type="text"
                             name="invoiceNo"
@@ -62,19 +62,6 @@ export default function CreateOrderForm({ totalPrice, finalPrice, optionCustomer
                             onChange={changeHandler}
                             className="p-[6px] rounded text-black outline-none"
                             placeholder="Enter invoice number"
-                        />
-                    </div>
-
-
-                    <div className="flex flex-col gap-1 w-full">
-                        <label htmlFor="date" className="after:content-['*'] after:ml-0.5 after:text-red-500">Date</label>
-                        <input
-                            type="date"
-                            name="date"
-                            value={orderData.date}
-                            onChange={changeHandler}
-                            required
-                            className="p-[6px] rounded text-black outline-none"
                         />
                     </div>
 

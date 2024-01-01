@@ -4,10 +4,10 @@ const Product = require("../models/Product")
 // **********************create Product***************************
 exports.createProduct = async( req , res )=>{
     try {
-        const { productName , price , unit , type , openingStock , currentStock } = req.body;
+        const { productName , price , unit , openingStock , currentStock } = req.body;
 
-        if( !productName || !unit || !type ){
-            return res.status(400).json({ success : false , message : "Provide product name"});
+        if( !productName || !unit ){
+            return res.status(400).json({ success : false , message : "Provide product name and unit"});
         }
 
         // is already exists
@@ -21,7 +21,6 @@ exports.createProduct = async( req , res )=>{
         const productDoc = await Product.create({
             productName,
             unit,
-            type,
             price,
             openingStock,
             currentStock

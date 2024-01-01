@@ -1,18 +1,20 @@
 import { useEffect, useState } from "react";
 import { getProduct } from "../../services/operations/product";
 
-export default function SelectProduct({ isSellOrder, products, setSelectedProducts }) {
+export default function SelectProduct({ products, setSelectedProducts }) {
 
     const [selectedProduct, setSelectedProduct] = useState("");
 
     const [entryData, setEntryData] = useState({
-        product: "", quantity: 0, height: 0, width: 0,
+        // product attribute will be name of product(always unique)
+        product: "", price: 0, quantity: 0, height: 0, width: 0,
     });
 
     async function sumbitHanlder(e) {
         e.preventDefault();
+        entryData.productName = selectedProduct.productName;
         setSelectedProducts(prev => ([...prev, entryData]))
-        setEntryData({ product: "", quantity: "", height: "", width: "" });
+        setEntryData({ product: "", price: 0, quantity: "", height: "", width: "" });
     }
 
     function changeHandler(e) {
@@ -24,6 +26,7 @@ export default function SelectProduct({ isSellOrder, products, setSelectedProduc
             }
         })
     }
+
 
     async function fetchProduct(productId) {
         const productData = await getProduct(productId);
@@ -69,7 +72,7 @@ export default function SelectProduct({ isSellOrder, products, setSelectedProduc
                     </select>
                 </div>
 
-                {/* current stock and quantity */}
+                {/* current stock, quantity and price */}
                 <div className="flex gap-10 w-full">
 
                     <div className="flex flex-col w-full gap-1">
@@ -84,6 +87,18 @@ export default function SelectProduct({ isSellOrder, products, setSelectedProduc
                             name="quantity"
                             required
                             value={entryData.quantity}
+                            onChange={changeHandler}
+                            className="p-1 rounded text-black outline-none"
+                        />
+                    </div>
+
+                    <div className="flex flex-col w-full gap-1 justify-center">
+                        <label htmlFor="price">Price (Rs.)</label>
+                        <input
+                            type="number"
+                            name="price"
+                            required
+                            value={entryData.price}
                             onChange={changeHandler}
                             className="p-1 rounded text-black outline-none"
                         />
@@ -139,12 +154,12 @@ export default function SelectProduct({ isSellOrder, products, setSelectedProduc
                 }
 
                 {
-                    (selectedProduct.currentStock - entryData.quantity < 0) && isSellOrder ? (
-                        <p className="rounded p-2 px-6 text-rose-600">Not enough stock</p>
-                    ) : (
-                        <button className="rounded mt-2 p-2 px-6 bg-slate-600">Add</button>
-                    )
-
+                    // (selectedProduct.currentStock - entryData.quantity < 0) && isSellOrder ? (
+                    //     <p className="rounded p-2 px-6 text-rose-600">Not enough stock</p>
+                    // ) : (
+                    //     <button className="rounded mt-2 p-2 px-6 bg-slate-600">Add</button>
+                    // )
+                    <button className="rounded mt-2 p-2 px-6 bg-slate-600">Add</button>
                 }
 
 

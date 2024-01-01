@@ -3,10 +3,10 @@ const mongoose = require("mongoose");
 
 const customerSchema = new mongoose.Schema({
 
-    name: { type: String, required: true, trim: true },
+    name: { type: String, required: true, unique: true, trim: true },
 
-    email: { type: String, trim: true, unique: true },
-    phone: { type: String },
+    email: { type: String, trim: true },
+    phone: { type: String, required : true },
     address: { state : String, district: String , city: String },
     GSTNumber: { type: String },
     PAN: { type: String },

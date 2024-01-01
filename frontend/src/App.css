@@ -1,13 +1,23 @@
 @media print {
+
     /* Styles for printing go here */
     body * {
         visibility: hidden;
+    }
+    body{
+        height: 100vh;
+    }
+
+    .print-section,
+    .print-section * {
+        visibility: visible;
+        color: black;
+    }
+
+
+    @page {
+        size: A5;
+        margin: 50cm;
       }
     
-      .print-section,
-      .print-section * {
-        visibility: visible;
-      }
-
-  }
-  
+}
