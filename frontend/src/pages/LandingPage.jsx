@@ -3,18 +3,6 @@ import Carousel from "../components/Crousel";
 
 // images
 import logo from "../assets/image/logo.png"
-import Board from "../assets/image/3dBoard.png"
-import backLight from "../assets/image/backLight.png"
-import billBook from "../assets/image/billBook.png"
-import canopy from "../assets/image/canopy.png"
-import hodingFlex from "../assets/image/hodingFlex.png"
-import standy from "../assets/image/standy.png"
-import stickers from "../assets/image/stickers.png"
-import tShirt from "../assets/image/tShirt.png"
-import pamplet from "../assets/image/pamplet.png"
-import laterHead from "../assets/image/laterHead.png"
-import envelopes from "../assets/image/envelopes.png"
-import visitingCard from "../assets/image/visitingCard.png"
 
 import canonPrinter from '../assets/crouselmage/canonPrinter.jpg'
 import ecoMachine from '../assets/crouselmage/ecoMachine.jpg'
@@ -80,60 +68,53 @@ export default function LandingPage() {
                 <div className="flex justify-between gap-6 flex-wrap ">
 
                     <div className="p-2 shadow-md shadow-white rounded hover:scale-[1.1] duration-75">
-                        <img src={hodingFlex} alt="" className="w-[300px]" />
+                        <img src="https://res.cloudinary.com/dqzctmgsp/image/upload/v1704359384/Shopkeeper%20account%20managment/hodingFlex-d1c863d1_aihnx1.png" alt="" className="w-[300px]" />
                     </div>
 
                     <div className="p-2 shadow-md shadow-white rounded hover:scale-[1.1] duration-75">
-                        <img src={stickers} alt="" className="w-[300px]" />
+                        <img src="https://res.cloudinary.com/dqzctmgsp/image/upload/v1704359395/Shopkeeper%20account%20managment/stickers-f1c72e75_h8nt10.png" alt="" className="w-[300px]" />
                     </div>
 
                     <div className="p-2 shadow-md shadow-white rounded hover:scale-[1.1] duration-75">
-                        <img src={envelopes} alt="" className="w-[300px]" />
+                        <img src="https://res.cloudinary.com/dqzctmgsp/image/upload/v1704359394/Shopkeeper%20account%20managment/envelopes-7a0199c5_qyaezn.png" alt="" className="w-[300px]" />
                     </div>
 
                     <div className="p-2 shadow-md shadow-white rounded hover:scale-[1.1] duration-75">
-                        <img src={standy} alt="" className="w-[300px]" />
+                        <img src="https://res.cloudinary.com/dqzctmgsp/image/upload/v1704359377/Shopkeeper%20account%20managment/standy-201b66ef_j5imuj.png" alt="" className="w-[300px]" />
                     </div>
 
                     <div className="p-2 shadow-md shadow-white rounded hover:scale-[1.1] duration-75">
-                        <img src={Board} alt="" className="w-[300px]" />
+                        <img src="https://res.cloudinary.com/dqzctmgsp/image/upload/v1704359390/Shopkeeper%20account%20managment/3dBoard-1528a010_vg34to.png" alt="" className="w-[300px]" />
                     </div>
 
                     <div className="p-2 shadow-md shadow-white rounded hover:scale-[1.1] duration-75">
-                        <img src={laterHead} alt="" className="w-[300px]" />
+                        <img src="https://res.cloudinary.com/dqzctmgsp/image/upload/v1704359419/Shopkeeper%20account%20managment/laterHead-74d8d13e_xlyp28.png"     alt="" className="w-[300px]" />
                     </div>
 
                     <div className="p-2 shadow-md shadow-white rounded hover:scale-[1.1] duration-75">
-                        <img src={billBook} alt="" className="w-[300px]" />
+                        <img src="https://res.cloudinary.com/dqzctmgsp/image/upload/v1704359371/Shopkeeper%20account%20managment/billBook-94423608_p9rb3b.png" alt="" className="w-[300px]" />
                     </div>
 
                     <div className="p-2 shadow-md shadow-white rounded hover:scale-[1.1] duration-75">
-                        <img src={canopy} alt="" className="w-[300px]" />
+                        <img src="https://res.cloudinary.com/dqzctmgsp/image/upload/v1704359396/Shopkeeper%20account%20managment/canopy-25ec1517_sziimr.png" alt="" className="w-[300px]" />
                     </div>
 
                     <div className="p-2 shadow-md shadow-white rounded hover:scale-[1.1] duration-75">
-                        <img src={pamplet} alt="" className="w-[300px]" />
+                        <img src="https://res.cloudinary.com/dqzctmgsp/image/upload/v1704359376/Shopkeeper%20account%20managment/pamplet-1d28ad67_nnkb99.png" alt="" className="w-[300px]" />
                     </div>
 
                     <div className="p-2 shadow-md shadow-white rounded hover:scale-[1.1] duration-75">
-                        <img src={visitingCard} alt="" className="w-[300px]" />
+                        <img src="https://res.cloudinary.com/dqzctmgsp/image/upload/v1704359389/Shopkeeper%20account%20managment/visitingCard-b6b38756_mutaxy.png" alt="" className="w-[300px]" />
                     </div>
 
                     <div className="p-2 shadow-md shadow-white rounded hover:scale-[1.1] duration-75">
-                        <img src={backLight} alt="" className="w-[300px]" />
+                        <img src="https://res.cloudinary.com/dqzctmgsp/image/upload/v1704359390/Shopkeeper%20account%20managment/backLight-e844fd1e_yei077.png" alt="" className="w-[300px]" />
                     </div>
 
                     <div className="p-2 shadow-md shadow-white rounded hover:scale-[1.1] duration-75">
-                        <img src={tShirt} alt="" className="w-[300px]" />
+                        <img src="https://res.cloudinary.com/dqzctmgsp/image/upload/v1704359376/Shopkeeper%20account%20managment/tShirt-729c4c96_th7lph.png" alt="" className="w-[300px]" />
                     </div>
 
-                    {/* <div className="p-2 shadow-md shadow-white rounded ">
-                        <img src={oneWay} alt="" className="w-[300px]" />
-                    </div>
-
-                    <div className="p-2 shadow-md shadow-white rounded ">
-                        <img src={wallPaper} alt="" className="w-[300px]" />
-                    </div> */}
 
                 </div>
 
