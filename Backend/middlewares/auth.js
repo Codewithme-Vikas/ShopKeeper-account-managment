@@ -6,7 +6,8 @@ require("dotenv").config();
 // ********************************* auth ***********************************************
 exports.auth = ( req , res , next )=>{
     try {
-        const token = req.cookies.token ||  req.headers['Authorization'].split(' ')[1]; // can be req.headers['Authorization'].replace('Bearer ' , '')
+        // const token = req.cookies.token ||  req.headers['Authorization'].split(' ')[1]; // can be req.headers['Authorization'].replace('Bearer ' , '')
+        const token = req.cookies.token || (req.headers['Authorization'] && req.headers['Authorization'].split(' ')[1]); // can be req.headers['Authorization'].replace('Bearer ' , '')
 
         if( !token ){
             return res.status(401).json({success : false , message : "Token is not provided!"});
