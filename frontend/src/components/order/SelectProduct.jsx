@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
+
 import { getProduct } from "../../services/operations/product";
+
 
 export default function SelectProduct({ products, setSelectedProducts }) {
 

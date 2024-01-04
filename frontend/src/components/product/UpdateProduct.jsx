@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 
 import { getProduct } from "../../services/operations/product";
 import { productUnits } from "../../data/productUnits";
+import { BACKEND_URL } from "../../data/backendUrl";
 
 export default function UpdateProduct({ id }) {
 
@@ -23,7 +24,7 @@ export default function UpdateProduct({ id }) {
             const productData = {
                 id, productName, price, unit, addStock
             }
-            const response = await fetch(`http://localhost:3000/api/v1/product/update`, {
+            const response = await fetch(`${BACKEND_URL}/product/update`, {
                 method: 'PUT',
                 body: JSON.stringify(productData),
                 headers: {

@@ -1,6 +1,8 @@
+import { BACKEND_URL } from "../../data/backendUrl"
+
 export async function getAllPayments(){
     try {
-        const response = await fetch( `http://localhost:3000/api/v1/order/getAllPayments`,{
+        const response = await fetch( `${BACKEND_URL}/order/getAllPayments`,{
             method : 'GET',
             credentials : "include"
         })

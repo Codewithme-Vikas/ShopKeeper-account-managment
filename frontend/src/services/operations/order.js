@@ -1,7 +1,9 @@
+import { BACKEND_URL } from "../../data/backendUrl"
+
 export async function getOrder( id ){
     try {
 
-        const response = await fetch( `http://localhost:3000/api/v1/order/getOrder`,{
+        const response = await fetch( `${BACKEND_URL}/order/getOrder`,{
             method : 'POST',
             body : JSON.stringify( {id} ),
             headers : {
@@ -28,7 +30,7 @@ export async function getOrder( id ){
 export async function getAllSellOrders(){
     try {
 
-        const response = await fetch( `http://localhost:3000/api/v1/order/getAllSellOrders`,{
+        const response = await fetch( `${BACKEND_URL}/order/getAllSellOrders`,{
             method : 'GET',
             credentials : "include"
         })
@@ -49,7 +51,7 @@ export async function getAllSellOrders(){
 export async function getAllBuyOrders(){
     try {
 
-        const response = await fetch( `http://localhost:3000/api/v1/order/getAllBuyOrders`,{
+        const response = await fetch( `${BACKEND_URL}/order/getAllBuyOrders`,{
             method : 'GET',
             credentials : "include"
         })
@@ -70,7 +72,7 @@ export async function getAllBuyOrders(){
 export async function getAllOrders(){
     try {
 
-        const response = await fetch( `http://localhost:3000/api/v1/order/getAllOrders`,{
+        const response = await fetch( `${BACKEND_URL}/order/getAllOrders`,{
             method : 'GET',
             credentials : "include"
         })

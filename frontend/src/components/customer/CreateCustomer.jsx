@@ -3,6 +3,7 @@ import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 import { states } from '../../data/states'
+import { BACKEND_URL } from '../../data/backendUrl'
 
 export default function CreateCustomer() {
 
@@ -22,7 +23,7 @@ export default function CreateCustomer() {
                 city: formData.city
             };
 
-            const response = await fetch(`http://localhost:3000/api/v1/customer/createCustomer`, {
+            const response = await fetch(`${BACKEND_URL}/customer/createCustomer`, {
                 method: 'POST',
                 body: JSON.stringify(formData),
                 headers: {

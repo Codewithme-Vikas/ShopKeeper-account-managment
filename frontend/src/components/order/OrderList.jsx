@@ -2,9 +2,6 @@ import { useEffect, useState } from "react"
 import { Link } from 'react-router-dom'
 
 
-import { CiEdit } from "react-icons/ci";
-import { BiSolidUserDetail } from "react-icons/bi";
-
 import { getAllSellOrders, getAllBuyOrders } from "../../services/operations/order";
 
 export default function OrderList() {

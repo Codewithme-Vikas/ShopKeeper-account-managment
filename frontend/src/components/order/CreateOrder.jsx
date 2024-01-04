@@ -1,15 +1,15 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 
 import CreateOrderForm from "./createOrderForm";
+import SelectProduct from "./SelectProduct";
 
 import { getAllCustomer } from "../../services/operations/customer";
 import { getAllProducts } from "../../services/operations/product";
 import { getAllOrders} from "../../services/operations/order";
 
-import SelectProduct from "./SelectProduct";
-import { useNavigate } from "react-router-dom";
-
+import { BACKEND_URL } from "../../data/backendUrl";
 
 
 export default function CreateOrder() {
@@ -69,7 +69,7 @@ export default function CreateOrder() {
                 GST1: { name: orderData.gst1, rate: orderData.gst1Rate },
                 GST2: { name: orderData.gst2, rate: orderData.gst2Rate },
             }
-            const response = await fetch(`http://localhost:3000/api/v1/order/create`, {
+            const response = await fetch(`${BACKEND_URL}/order/create`, {
                 method: 'POST',
                 body: JSON.stringify(orderData),
                 headers: {

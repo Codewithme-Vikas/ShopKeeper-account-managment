@@ -1,6 +1,8 @@
+import { BACKEND_URL } from "../../data/backendUrl"
+
 export async function getAllProducts(){
     try {
-        const response = await fetch( "http://localhost:3000/api/v1/product/getAllProducts",{
+        const response = await fetch( `${BACKEND_URL}/product/getAllProducts`,{
             credentials : "include"
         });
 
@@ -19,7 +21,7 @@ export async function getAllProducts(){
 
 export async function getProduct( productId ){
     try {
-        const response = await fetch( "http://localhost:3000/api/v1/product/getProduct",{
+        const response = await fetch( `${BACKEND_URL}/product/getProduct`,{
             method : 'POST',
             body: JSON.stringify({ productId }),
             headers: {

@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 import { getAllCustomer } from "../services/operations/customer";
-import { useNavigate } from "react-router-dom";
-import toast from "react-hot-toast";
+import { BACKEND_URL } from "../data/backendUrl";
 
 export default function CreatePayment() {
 
-    const navigate = useNavigate();
     const [customers, setCustomers] = useState([]);
 
     const [customerId, setCustomerId] = useState("");
@@ -30,7 +29,7 @@ export default function CreatePayment() {
                 return;
             }
             console.log( note , "note")
-            const response = await fetch(`http://localhost:3000/api/v1/order/payment`, {
+            const response = await fetch(`${BACKEND_URL}/order/payment`, {
                 method: 'POST',
                 body: JSON.stringify({customerId,amount,note}),
                 headers: {

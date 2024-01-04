@@ -10,7 +10,9 @@ export default function CustomerDetail({ id }) {
     const [customerCredit, setCustomerCredit] = useState(0);
     const [totalOrderPrice, setTotalOrderPrice] = useState(0)
     const [totalPayment, setTotalPayment] = useState(0)
+    
     console.log( customer , "customer data ")
+    
     async function fetchCustomer(customerId) {
         const customer = await getCustomer(customerId)
         if (customer) {

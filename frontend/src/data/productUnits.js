@@ -1,1 +1,1 @@
-export const productUnits = [ "piece" , "sq. m" , "sq. feet"];
+export const productUnits = [ "piece" , "sq. feet"];

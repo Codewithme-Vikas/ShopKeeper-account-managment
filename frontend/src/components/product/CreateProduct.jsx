@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import toast from "react-hot-toast";
 
 import { productUnits } from "../../data/productUnits"
+import { BACKEND_URL } from '../../data/backendUrl'
 
 export default function CreateProduct() {
 
@@ -22,7 +23,7 @@ export default function CreateProduct() {
                 productName, price, unit, openingStock,
                 currentStock: openingStock
             }
-            const response = await fetch(`http://localhost:3000/api/v1/product/create`, {
+            const response = await fetch(`${BACKEND_URL}/product/create`, {
                 method: 'POST',
                 body: JSON.stringify(productData),
                 headers: {

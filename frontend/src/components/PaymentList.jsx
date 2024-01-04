@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react"
+import { Link } from "react-router-dom";
 
 
 import { getAllPayments } from "../services/operations/payments"
-import { Link } from "react-router-dom";
-import FilterItems from "./FilterItems";
 
 export default function PaymentList() {
 

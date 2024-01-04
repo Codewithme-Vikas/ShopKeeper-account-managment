@@ -1,6 +1,8 @@
+import { BACKEND_URL } from "../../data/backendUrl"
+
 export async function getCustomer( customerId ){
     try {
-        const response = await fetch( `http://localhost:3000/api/v1/customer/getCustomer`,{
+        const response = await fetch( `${BACKEND_URL}/customer/getCustomer`,{
             method : 'POST',
             body : JSON.stringify( { customerId } ),
             headers : {
@@ -23,7 +25,7 @@ export async function getCustomer( customerId ){
 
 export async function getAllCustomer(){
     try {
-        const response = await fetch( `http://localhost:3000/api/v1/customer/getAllCustomers`,{
+        const response = await fetch( `${BACKEND_URL}/customer/getAllCustomers`,{
             method : 'GET',
             credentials : "include"
         })

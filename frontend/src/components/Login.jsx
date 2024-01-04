@@ -3,9 +3,11 @@ import toast from "react-hot-toast";
 import { UserContext } from "../context/userContext";
 import {  Link, useNavigate } from "react-router-dom";
 
+import { BACKEND_URL } from "../data/backendUrl";
+
 export default function Login() {
 
-    const { userInfo , setToken , setUserInfo } = useContext( UserContext );
+    const {  setToken , setUserInfo } = useContext( UserContext );
     const navigate = useNavigate();
 
     const [name, setName] = useState('');
@@ -16,7 +18,7 @@ export default function Login() {
 
         try {
             
-            const response = await fetch("http://localhost:3000/api/v1/auth/login", {
+            const response = await fetch(`${BACKEND_URL}/auth/login`, {
                 method: 'POST',
                 body: JSON.stringify({ name, password }),
                 headers: {

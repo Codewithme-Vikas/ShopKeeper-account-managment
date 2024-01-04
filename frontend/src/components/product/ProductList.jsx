@@ -7,6 +7,8 @@ import { FaTrashAlt } from "react-icons/fa";
 import toast from "react-hot-toast";
 
 import { getAllProducts } from "../../services/operations/product"
+import { BACKEND_URL } from "../../data/backendUrl";
+
 import FilterItems from "../FilterItems";
 
 
@@ -27,7 +29,7 @@ export default function CustomerList() {
     async function deleteProduct( id ){
 
         try {
-            const response = await fetch( "http://localhost:3000/api/v1/product/delete",{
+            const response = await fetch( `${BACKEND_URL}/product/delete`,{
                 method : 'POST',
                 body : JSON.stringify( { id } ),
                 headers: {

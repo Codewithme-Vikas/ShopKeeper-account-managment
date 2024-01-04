@@ -1,5 +1,5 @@
 import toast from "react-hot-toast";
-
+import { BACKEND_URL } from "../../data/backendUrl"
 
 export async function logout( setUserInfo , setToken , navigate ){
     try {
@@ -22,7 +22,7 @@ export async function logout( setUserInfo , setToken , navigate ){
 
 export async function resetPasswordToken( email, setIsSentEmail ){
     try {
-        const response = await fetch("http://localhost:3000/api/v1/auth/resetPasswordToken", {
+        const response = await fetch(`${BACKEND_URL}/auth/resetPasswordToken`, {
             method: 'POST',
             body: JSON.stringify({ email }),
             headers: {
@@ -48,7 +48,7 @@ export async function resetPasswordToken( email, setIsSentEmail ){
 export async function resetPassword( id , token , password , confirmPassword,navigate ){
     try {
             
-        const response = await fetch("http://localhost:3000/api/v1/auth/resetPassword", {
+        const response = await fetch(`${BACKEND_URL}/auth/resetPassword`, {
             method: 'POST',
             body: JSON.stringify({ id, token ,  password, confirmPassword }),
             headers: {
