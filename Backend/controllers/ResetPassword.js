@@ -40,7 +40,7 @@ exports.resetPasswordToken = async (req, res) => {
         });
 
         // create UI link on email 
-        const resetURL = `http://${process.env.FRONTEND_URL}/${userDoc._id}/update-password/${token}`; // id will increase security
+        const resetURL = `${process.env.FRONTEND_URL}/${userDoc._id}/update-password/${token}`; // id will increase security
 
         // send mail containg the UI link
         try {
