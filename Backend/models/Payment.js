@@ -6,6 +6,8 @@ const paymentSchema = new mongoose.Schema({
 
     amount : { type  : Number },
 
+    note : { type : String },
+
 },{
     timestamps : true,
 });

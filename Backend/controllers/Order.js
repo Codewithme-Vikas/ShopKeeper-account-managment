@@ -8,7 +8,7 @@ const Customer = require("../models/Customer");
 // GST will be object of two objects - GST1 AND GST2 : { name  , rate }
 exports.createOrder = async (req, res) => {
     try {
-        const { customerId, invoiceNo, type, products, orderPrice, GST, discount = 0, } = req.body;
+        const { customerId, invoiceNo, type, products, orderPrice, GST, discount = 0,note } = req.body;
 
         if (!orderPrice || !customerId || !invoiceNo || !type || !products) {
             return res.status(400).json({ success: false, message: "provide all information." });
@@ -60,6 +60,7 @@ exports.createOrder = async (req, res) => {
             invoiceNo,
             GST,
             customer: customerId,
+            note
         });
 
 
@@ -228,6 +229,28 @@ exports.getAllSellOrders = async (req, res) => {
         return res.status(400).json({
             success: false,
             message: "Failed to  getting all selling orders",
+            error: error.message
+        })
+    }
+};
+
+// ****************************Get All Selling Orders******************************
+exports.getAllOrders = async (req, res) => {
+    try {
+
+        const allOrders = await Order.find({  })
+
+        return res.status(200).json({
+            success: true,
+            message: "Successfully getting all  orders",
+            noOfOrders : allOrders.length
+        });
+
+    } catch (error) {
+        console.log(error, "Error in get all orders controller");
+        return res.status(400).json({
+            success: false,
+            message: "Failed to  getting all orders",
             error: error.message
         })
     }

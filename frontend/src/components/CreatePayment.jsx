@@ -10,6 +10,7 @@ export default function CreatePayment() {
     const [customers, setCustomers] = useState([]);
 
     const [customerId, setCustomerId] = useState("");
+    const [ note , setNote ] = useState("");
     const [amount, setAmount] = useState(0);
 
     async function fetchAllCustomers() {
@@ -28,10 +29,10 @@ export default function CreatePayment() {
                 toast.error("Enter valid amount");
                 return;
             }
-
+            console.log( note , "note")
             const response = await fetch(`http://localhost:3000/api/v1/order/payment`, {
                 method: 'POST',
-                body: JSON.stringify({customerId,amount}),
+                body: JSON.stringify({customerId,amount,note}),
                 headers: {
                     'Content-Type': 'application/json'
                 },
@@ -102,8 +103,29 @@ export default function CreatePayment() {
 
                 </div>
 
+
+                <div className=" flex flex-col w-full gap-1">
+
+                        <label htmlFor="note">Note :</label>
+                        <textarea
+                            name="note"
+                            id="note"
+                            onChange={e => setNote(e.target.value)}
+                            value={note}
+                            cols="30"
+                            rows="3"
+                            className="p-[6px] rounded text-black outline-none "
+                            placeholder="Enter any additional message..."
+                        >
+                        </textarea>
+                       
+                    </div>
+
+
+                
+
                 <div className="flex gap-6">
-                    <button className="bg-rose-800 p-2 px-6 rounded outline-none hover:bg-rose-700">Pay</button>
+                    <button className="bg-blue-700 p-2 px-6 rounded outline-none text-white hover:bg-blue-600">Pay</button>
                 </div>
 
 

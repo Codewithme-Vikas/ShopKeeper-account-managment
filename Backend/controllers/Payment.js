@@ -7,7 +7,7 @@ const Customer = require("../models/Customer");
 // ***************************Payment, except order time************************************
 exports.payment = async (req, res) => {
     try {
-        const { customerId, amount } = req.body;
+        const { customerId, amount, note } = req.body;
 
         if (!customerId || (amount <= 0)) {
             return res.status(400).json({ success: false, message: "customer id or  amount is missing " });
@@ -23,7 +23,8 @@ exports.payment = async (req, res) => {
         // create payment
         const paymentDoc = await Payment.create({
             customer: customerId,
-            amount
+            amount,
+            note
         });
 
         // store payment id into customer
@@ -44,6 +45,31 @@ exports.payment = async (req, res) => {
         return res.status(400).json({
             success: false,
             message: "Failed to create payment",
+            error: error.message
+        })
+    }
+}
+
+
+
+// ***************************Get all Payments************************************
+exports.getAllPayments = async (req, res) => {
+    try {
+
+        const allPaymentDoc = await Payment.find({}).populate({ path : "customer" , select : "name phone"}).sort("-createdAt").exec(); 
+
+        return res.status(200).json({
+            success: true,
+            message: "successfully get the payments",
+            allPaymentDoc
+        });
+
+
+    } catch (error) {
+        console.log(error, "Error in get payments controller");
+        return res.status(400).json({
+            success: false,
+            message: "Failed to get payment",
             error: error.message
         })
     }

@@ -209,12 +209,12 @@ export default function UpdateCustomer({ id }) {
                 </div>
 
 
-                <button className="bg-rose-800 p-2 px-6 rounded outline-none hover:bg-rose-700">Add</button>
+                <button className="bg-blue-700 p-2 px-6 rounded outline-none hover:bg-blue-500 text-white">Add</button>
 
                 <button
                     type="button"
                     onClick={() => navigate(-1)}
-                    className="bg-blue-800 p-2 px-6 rounded outline-none hover:bg-blue-700"
+                    className="bg-rose-700 p-2 px-6 rounded outline-none hover:bg-rose-500 text-white"
                 >
                     Discard
                 </button>

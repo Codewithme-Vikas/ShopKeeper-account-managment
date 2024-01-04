@@ -8,7 +8,7 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import HomePage from './pages/HomePage.jsx'
 import ErrorPage from './pages/ErrorPage.jsx'
 import SignupPage from './pages/SignupPage.jsx'
-import LoginPage from './pages/LoginPage.jsx'
+import LandingPage from './pages/LandingPage.jsx'
 import { UserContextProvider } from './context/userContext.jsx'
 import ListPage from './pages/ListPage.jsx'
 import AddPage from './pages/AddPage.jsx'
@@ -67,7 +67,7 @@ const router = createBrowserRouter([
             },
             {
                 path: "login",
-                element: <LoginPage />
+                element: <LandingPage />
             },
             {
                 path : "reset-password",

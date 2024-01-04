@@ -14,7 +14,7 @@ export default function AddPage() {
     return (
         <div className='mx-auto flex justify-center overflow-hidden'>
 
-            <div className='flex-[13%] pt-6 bg-slate-700 min-h-screen'>
+            <div className='flex-[13%] pt-6 bg-slate-200 min-h-screen'>
                 <ul className='flex flex-col gap-4  px-4'>
                     <Link to="/add/customer"> Customer +</Link>
                     <Link to="/add/product" > Product +</Link>

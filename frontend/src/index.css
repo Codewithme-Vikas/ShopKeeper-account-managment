@@ -4,6 +4,23 @@
 
 
 body{
-    background-color: black;
-    color: white;
+    /* background-color: black;
+    color: white; */
+    box-sizing: border-box;
+    width: 100vw;
+    height: 100%;
+    overflow-x: hidden;
+}
+
+html {
+    scroll-behavior: smooth;
+  }
+  
+input, textarea{
+    background-color: rgb(194, 202, 209);
+    color: black !important;
+}
+
+select{
+    background-color: rgb(194, 202, 209);
 }

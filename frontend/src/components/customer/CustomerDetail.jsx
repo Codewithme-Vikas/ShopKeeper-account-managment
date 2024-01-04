@@ -10,7 +10,7 @@ export default function CustomerDetail({ id }) {
     const [customerCredit, setCustomerCredit] = useState(0);
     const [totalOrderPrice, setTotalOrderPrice] = useState(0)
     const [totalPayment, setTotalPayment] = useState(0)
-
+    console.log( customer , "customer data ")
     async function fetchCustomer(customerId) {
         const customer = await getCustomer(customerId)
         if (customer) {
@@ -119,6 +119,8 @@ export default function CustomerDetail({ id }) {
                                 <th className="border border-gray-800 py-2 px-4">S.No.</th>
                                 <th className="border border-gray-800 py-2 px-4">Amount</th>
                                 <th className="border border-gray-800 py-2 px-4">Date</th>
+                                <th className="border border-gray-800 py-2 px-4">Note</th>
+
                             </tr>
                         </thead>
                         <tbody>
@@ -126,7 +128,14 @@ export default function CustomerDetail({ id }) {
                                 <tr key={payment._id}>
                                     <td className="border border-gray-800 py-2 px-4">{index + 1}</td>
                                     <td className="border border-gray-800 py-2 px-4">Rs. {payment.amount}</td>
-                                    <td className="border border-gray-800 py-2 px-4">{new Date(payment.createdAt).toLocaleDateString()}</td>
+                                    {/* <td className="border border-gray-800 py-2 px-4">{new Date(payment.createdAt).toLocaleDateString()}</td> */}
+                                    <td className="border border-gray-800 py-2 px-4">{new Date(payment.createdAt).getDay()}/{new Date(payment.createdAt).getMonth() + 1}/{new Date(payment.createdAt).getFullYear()}</td>
+
+                                    <td className="border border-gray-800 py-2 px-4">
+                                    {
+                                        payment?.note ? (payment?.note) : "__"
+                                    }
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>
@@ -154,7 +163,8 @@ export default function CustomerDetail({ id }) {
                                         <Link to={`/order/detail/${order._id}`} className="hover:underline">{order.invoiceNo}</Link>
                                     </td>
                                     <td className="border border-gray-800 py-2 px-4">Rs. {order.orderPrice}</td>
-                                    <td className="border border-gray-800 py-2 px-4">{new Date(order.date).toLocaleDateString()}</td>
+                                    {/* <td className="border border-gray-800 py-2 px-4">{new Date(order.createdAt).toLocaleDateString()}</td> */}
+                                    <td className="border border-gray-800 py-2 px-4">{new Date(order.createdAt).getDay()}/{new Date(order.createdAt).getMonth() + 1}/{new Date(order.createdAt).getFullYear()}</td>
                                 </tr>
                             ))}
                         </tbody>

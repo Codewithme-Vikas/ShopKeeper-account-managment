@@ -9,7 +9,7 @@ export const navLinks = [
     },
     {
         title : "List",
-        path : "/list"
+        path : "/list/order"
     },
     {
         title : "Logout",

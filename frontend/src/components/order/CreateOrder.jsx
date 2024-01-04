@@ -5,6 +5,7 @@ import CreateOrderForm from "./createOrderForm";
 
 import { getAllCustomer } from "../../services/operations/customer";
 import { getAllProducts } from "../../services/operations/product";
+import { getAllOrders} from "../../services/operations/order";
 
 import SelectProduct from "./SelectProduct";
 import { useNavigate } from "react-router-dom";
@@ -20,6 +21,7 @@ export default function CreateOrder() {
     const [customers, setCustomers] = useState([]);
     const [products, setProducts] = useState([]);
 
+
     const [optionCustomers, setOptionCustomers] = useState([]);
     // const [optionProducts, setOptionProducts] = useState([]);
 
@@ -27,10 +29,11 @@ export default function CreateOrder() {
 
     const [totalPrice, setTotalPrice] = useState(0);
     const [finalPrice, setFinalPrice] = useState(0)
+    const [ invoiceNo , setInvoiceNo ] = useState(0);
 
     const [orderData, setOrderData] = useState({
         customerId: "", discount: 0, invoiceNo: "", enterPrice: "",
-        gst1: "", gst2: "", gst1Rate: 0, gst2Rate: 0
+        gst1: "", gst2: "", gst1Rate: 0, gst2Rate: 0, note : ""
     });
 
 
@@ -41,6 +44,7 @@ export default function CreateOrder() {
             const selectedProduct = selectedProducts.find(selectedProduct => selectedProduct.product === product._id);
             return {
                 ...product,
+                price : selectedProduct.price,
                 quantity: selectedProduct.quantity,
                 height: selectedProduct.height,
                 width: selectedProduct.width,
@@ -52,15 +56,15 @@ export default function CreateOrder() {
         e.preventDefault();
 
         try {
-
+            console.log( finalPrice , "finalprice ")
             if (!selectedProducts.length) {
                 toast.error("Select at least one product");
                 return;
             }
-
             orderData["products"] = selectedProducts;
             orderData["type"] = isSellOrder ? "Sell" : "Buy";
             orderData["orderPrice"] = finalPrice;
+            orderData["invoiceNo"] = invoiceNo;
             orderData["GST"] = {
                 GST1: { name: orderData.gst1, rate: orderData.gst1Rate },
                 GST2: { name: orderData.gst2, rate: orderData.gst2Rate },
@@ -94,11 +98,15 @@ export default function CreateOrder() {
     async function fetchCustomersAndProducts() {
         const customersData = await getAllCustomer();
         const productsData = await getAllProducts();
+        const noOfOrders = await getAllOrders();
         if (customersData) {
             setCustomers(customersData)
         }
         if (productsData) {
             setProducts(productsData)
+        }
+        if( noOfOrders ){
+            setInvoiceNo( noOfOrders );
         }
         return;
     }
@@ -107,6 +115,7 @@ export default function CreateOrder() {
 
     useEffect(() => {
         fetchCustomersAndProducts();
+
     }, []);
 
     useEffect(() => {
@@ -119,20 +128,21 @@ export default function CreateOrder() {
         let totalPrice = 0;
 
         filteredProducts.forEach(product => {
-            totalPrice += product?.area ? (product.quantity * product.price * product.area) : product.quantity * product.price;
+            totalPrice += Number(product.price);
         });
 
         setTotalPrice(totalPrice);
+        setFinalPrice(totalPrice)
     }, [filteredProducts]);
 
     useEffect(() => {
         const finalGSTRate = Number(orderData.gst1Rate) + Number(orderData.gst2Rate);
 
-        const discountedPrice = orderData.enterPrice - orderData.discount;
-        const finalPrice = discountedPrice * finalGSTRate / 100;
+        const discountedPrice = totalPrice - orderData.discount;
+        const finalGST = discountedPrice * finalGSTRate / 100;
 
-        setFinalPrice(discountedPrice + finalPrice)
-    }, [orderData.gst1Rate, orderData.gst2Rate, orderData.enterPrice, orderData.discount]);
+        setFinalPrice(discountedPrice + finalGST )
+    }, [orderData.gst1Rate, orderData.gst2Rate, orderData.discount]);
 
 
     return (
@@ -193,6 +203,8 @@ export default function CreateOrder() {
                             orderData={orderData}
                             setOrderData={setOrderData}
                             submitHandler={submitHandler}
+                            invoiceNo = { invoiceNo }
+                            setInvoiceNo = { setInvoiceNo }
                         />
 
                     </div>
@@ -200,7 +212,7 @@ export default function CreateOrder() {
 
 
                     {/* table of products */}
-                    <div className="flex-[50%]">
+                    <div className="flex-[50%] mt-4">
 
                         {
                             filteredProducts.length > 0 &&
@@ -214,11 +226,11 @@ export default function CreateOrder() {
                                             <tr>
                                                 <th className="py-2 px-4 border-b">S.No.</th>
                                                 <th className="py-2 px-4 border-b">Name</th>
-                                                <th className="py-2 px-4 border-b">Price (1 unit)</th>
                                                 <th className="py-2 px-4 border-b">Unit</th>
-                                                <th className="py-2 px-4 border-b">Area</th>
+                                                <th className="py-2 px-4 border-b">Height</th>
+                                                <th className="py-2 px-4 border-b">Width</th>
                                                 <th className="py-2 px-4 border-b">Quantity</th>
-                                                <th className="py-2 px-4 border-b">Total</th>
+                                                <th className="py-2 px-4 border-b">Price</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -228,17 +240,22 @@ export default function CreateOrder() {
                                                         <tr key={product._id}>
                                                             <td className="py-2 px-4 border-b">{index + 1}</td>
                                                             <td className="py-2 px-4 border-b">{product.productName}</td>
-                                                            <td className="py-2 px-4 border-b">{product.price}</td>
                                                             <td className="py-2 px-4 border-b">{product.unit}</td>
                                                             <td className="py-2 px-4 border-b">
                                                                 {
-                                                                    product.area ? product.area : "___"
+                                                                    product.height ? product.height : "___"
+                                                                }
+                                                            </td>
+                                                            <td className="py-2 px-4 border-b">
+                                                                {
+                                                                    product.width ? product.width : "___"
                                                                 }
                                                             </td>
                                                             <td className="py-2 px-4 border-b">{product.quantity}</td>
                                                             <td className="py-2 px-4 border-b">
                                                                 {
-                                                                    product.area ? (product.area * product.quantity * product.price) : (product.quantity * product.price)
+                                                                    // product.area ? (product.area * product.quantity * product.price) : (product.quantity * product.price)
+                                                                    product.price
                                                                 }
                                                             </td>
                                                         </tr>

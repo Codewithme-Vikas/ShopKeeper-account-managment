@@ -8,7 +8,7 @@ const { resetPasswordToken, resetPassword } = require("../controllers/ResetPassw
 
 // **********************************Auth APIS************************************************
 
-router.post("/signup" , signup );
+// router.post("/signup" , signup );
 
 router.post("/login" , login );
 

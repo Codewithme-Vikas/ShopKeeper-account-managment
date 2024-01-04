@@ -14,7 +14,7 @@ export default function Navbar() {
 
 
     return (
-        <div className="bg-slate-800 sticky top-0">
+        <div className="bg-slate-300 sticky top-0">
 
             <div className="w-10/12 mx-auto py-3 flex justify-between items-center gap-2">
 

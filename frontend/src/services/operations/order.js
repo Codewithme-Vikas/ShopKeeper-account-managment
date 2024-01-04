@@ -66,3 +66,24 @@ export async function getAllBuyOrders(){
         return null;
     }
 }
+
+export async function getAllOrders(){
+    try {
+
+        const response = await fetch( `http://localhost:3000/api/v1/order/getAllOrders`,{
+            method : 'GET',
+            credentials : "include"
+        })
+        
+        const data = await response.json();
+        if( data.success ){
+            return data.noOfOrders;
+        }else{
+            toast.error(data.message)
+            return false;
+        }
+    } catch (error) {
+        console.log(error , "get all buy order handler");
+        return null;
+    }
+}

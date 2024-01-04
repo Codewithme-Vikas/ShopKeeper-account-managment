@@ -125,7 +125,7 @@ export default function CreateProduct() {
 
 
 
-                <button className="bg-rose-800 p-2 px-6 mt-4 rounded outline-none hover:bg-rose-700">Add</button>
+                <button className="bg-blue-700 p-2 px-6 mt-4 rounded outline-none hover:bg-blue-500">Add</button>
 
 
             </form>

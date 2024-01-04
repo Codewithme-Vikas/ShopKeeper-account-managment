@@ -14,7 +14,7 @@ export default function SelectProduct({ products, setSelectedProducts }) {
         e.preventDefault();
         entryData.productName = selectedProduct.productName;
         setSelectedProducts(prev => ([...prev, entryData]))
-        setEntryData({ product: "", price: 0, quantity: "", height: "", width: "" });
+        setEntryData({ product: "", price: 0, quantity: 0, height: 0, width: 0 });
     }
 
     function changeHandler(e) {
@@ -43,9 +43,9 @@ export default function SelectProduct({ products, setSelectedProducts }) {
 
 
     return (
-        <form onSubmit={sumbitHanlder} className="flex flex-col gap-4 flex-wrap shadow-sm shadow-blue-300 p-4">
+        <form onSubmit={sumbitHanlder} className="mb-3 flex flex-col gap-4 flex-wrap shadow-sm shadow-blue-300 p-4">
 
-            <p className="text-lg text-center text-rose-400">Add items...</p>
+            <p className="text-lg text-center text-rose-400">Add products...</p>
 
             <div className="flex flex-col gap-3 items-start">
 
@@ -65,48 +65,14 @@ export default function SelectProduct({ products, setSelectedProducts }) {
                         {
                             products?.map((product) => {
                                 return (
-                                    <option value={product._id} key={product._id}>{product.productName}{"   "}{`(Rs. ${product.price})`}</option>
+                                    <option value={product._id} key={product._id}>{product.productName}</option>
                                 )
                             })
                         }
                     </select>
                 </div>
 
-                {/* current stock, quantity and price */}
-                <div className="flex gap-10 w-full">
-
-                    <div className="flex flex-col w-full gap-1">
-                        <p>Current Stock </p>
-                        <p className="rounded p-[6px] px-4 bg-slate-600 text-white">{selectedProduct.currentStock || 0}</p>
-                    </div>
-
-                    <div className="flex flex-col w-full gap-1 justify-center">
-                        <label htmlFor="quantity">Quantity</label>
-                        <input
-                            type="number"
-                            name="quantity"
-                            required
-                            value={entryData.quantity}
-                            onChange={changeHandler}
-                            className="p-1 rounded text-black outline-none"
-                        />
-                    </div>
-
-                    <div className="flex flex-col w-full gap-1 justify-center">
-                        <label htmlFor="price">Price (Rs.)</label>
-                        <input
-                            type="number"
-                            name="price"
-                            required
-                            value={entryData.price}
-                            onChange={changeHandler}
-                            className="p-1 rounded text-black outline-none"
-                        />
-                    </div>
-
-                </div>
-
-
+                
 
                 {/* Height , width and area if unit is not piece */}
                 {
@@ -138,7 +104,7 @@ export default function SelectProduct({ products, setSelectedProducts }) {
                             />
                         </div>
 
-                        <div className="flex flex-col w-full gap-1">
+                        {/* <div className="flex flex-col w-full gap-1">
                             <label htmlFor="area">Area :({selectedProduct.unit})</label>
                             <input
                                 type="number"
@@ -147,11 +113,46 @@ export default function SelectProduct({ products, setSelectedProducts }) {
                                 readOnly
                                 className="p-1 rounded text-black outline-none"
                             />
-                        </div>
+                        </div> */}
 
 
                     </div>
                 }
+
+                {/* current stock, quantity and price */}
+                <div className="flex gap-10 w-full">
+
+                    {/* <div className="flex flex-col w-full gap-1">
+                        <p>Current Stock </p>
+                        <p className="rounded p-[6px] px-4 bg-slate-600 text-white">{selectedProduct.currentStock || 0}</p>
+                    </div> */}
+
+                    <div className="flex flex-col w-full gap-1 justify-center">
+                        <label htmlFor="quantity">Quantity</label>
+                        <input
+                            type="number"
+                            name="quantity"
+                            required
+                            value={entryData.quantity}
+                            onChange={changeHandler}
+                            className="p-1 rounded text-black outline-none"
+                        />
+                    </div>
+
+                    <div className="flex flex-col w-full gap-1 justify-center">
+                        <label htmlFor="price">Price (Rs.)</label>
+                        <input
+                            type="number"
+                            name="price"
+                            required
+                            value={entryData.price}
+                            onChange={changeHandler}
+                            className="p-1 rounded text-black outline-none"
+                        />
+                    </div>
+
+                </div>
+
 
                 {
                     // (selectedProduct.currentStock - entryData.quantity < 0) && isSellOrder ? (
@@ -159,7 +160,7 @@ export default function SelectProduct({ products, setSelectedProducts }) {
                     // ) : (
                     //     <button className="rounded mt-2 p-2 px-6 bg-slate-600">Add</button>
                     // )
-                    <button className="rounded mt-2 p-2 px-6 bg-slate-600">Add</button>
+                    <button className="rounded mt-2 p-2 px-6 bg-blue-700 hover:bg-blue-500">Add</button>
                 }
 
 

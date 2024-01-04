@@ -107,7 +107,7 @@ exports.getCustomer = async (req, res) => {
 
         const customerDoc  = await Customer.findById( customerId )
                                 .populate({path : "orders" , select : "orderPrice invoiceNo date createdAt"})
-                                .populate({path : "payments" , select : "amount createdAt"})
+                                .populate({path : "payments" , select : "amount createdAt note"})
                                 .exec();
 
         if( !customerDoc ){

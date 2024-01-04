@@ -61,7 +61,7 @@ export default function CreateCustomer() {
     return (
        
 
-        <div className="max-w-4xl mx-auto my-8 p-4  shadow-md shadow-slate-600 rounded-lg">
+        <div className="max-w-4xl mx-auto my-8 p-4  shadow-md shadow-slate-500 rounded-lg">
             <p className="text-lg text-rose-500 my-1">Add new customer...</p>
 
             <form onSubmit={submitHandler} className="flex gap-7 flex-wrap p-4 my-4 text-[16px]">
@@ -75,7 +75,7 @@ export default function CreateCustomer() {
                             type="text"
                             name="name"
                             required
-                            className="p-[6px] rounded text-slate-800 bg-white outline-none"
+                            className="p-[6px] rounded outline-none"
                             placeholder="Enter customer name"
                             onChange={changeHandler}
                             value={formData.name}
@@ -90,7 +90,7 @@ export default function CreateCustomer() {
                         <input
                             type="email"
                             name="email"
-                            className="p-[6px] rounded text-slate-800 bg-white outline-none"
+                            className="p-[6px] rounded outline-none"
                             placeholder="customer@email.com"
                             onChange={changeHandler}
                             value={formData.email}
@@ -109,7 +109,7 @@ export default function CreateCustomer() {
                             <input
                                 type="tel"
                                 name="phone"
-                                className="p-[6px] rounded text-slate-800 bg-white outline-none"
+                                className="p-[6px] rounded  outline-none"
                                 placeholder="Enter the customer phone number"
                                 onChange={changeHandler}
                                 value={formData.phone}
@@ -122,7 +122,7 @@ export default function CreateCustomer() {
                             <input
                                 type="text"
                                 name="GSTNumber"
-                                className="p-[6px] rounded text-slate-800 bg-white outline-none"
+                                className="p-[6px] rounded outline-none"
                                 placeholder="Enter the GST number"
                                 onChange={changeHandler}
                                 value={formData.GSTNumber}
@@ -135,7 +135,7 @@ export default function CreateCustomer() {
                             <input
                                 type="text"
                                 name="PAN"
-                                className="p-[6px] rounded text-slate-800 bg-white outline-none"
+                                className="p-[6px] rounded  outline-none"
                                 placeholder="Enter the PAN number"
                                 onChange={changeHandler}
                                 value={formData.PAN}
@@ -152,7 +152,7 @@ export default function CreateCustomer() {
                             <label htmlFor="state" className="text-slate-500">State</label>
                             <select
                                 name="state"
-                                className="p-[5px] px-4 rounded text-slate-800 bg-white outline-none"
+                                className="p-[5px] px-4 rounded outline-none"
                                 onChange={changeHandler}
                                 value={formData.state}
                             >
@@ -167,7 +167,7 @@ export default function CreateCustomer() {
                             <label htmlFor="district" className="text-slate-500">District</label>
                             <select
                                 name="district"
-                                className="p-[6px] px-4 rounded text-slate-800 bg-white outline-none"
+                                className="p-[6px] px-4 rounded outline-none"
                                 onChange={changeHandler}
                                 value={formData.district}
                             >
@@ -183,7 +183,7 @@ export default function CreateCustomer() {
                             <input
                                 type="text"
                                 name="city"
-                                className="p-[6px] rounded text-slate-800 bg-white outline-none"
+                                className="p-[6px] rounded outline-none"
                                 onChange={changeHandler}
                                 value={formData.city}
                                 placeholder="Enter local address"
@@ -200,7 +200,7 @@ export default function CreateCustomer() {
                     <select
                         name="accountType"
                         required
-                        className="p-2 px-6 rounded text-slate-800 bg-white outline-none"
+                        className="p-2 px-6 rounded outline-none"
                         onChange={changeHandler}
                         value={formData.accountType}
                     >
@@ -209,7 +209,7 @@ export default function CreateCustomer() {
                     </select>
                 </div>
 
-                <button className="bg-slate-800 p-2 px-6 rounded text-white hover:bg-slate-700">Add</button>
+                <button className="bg-blue-700 p-2 px-6 rounded text-white hover:bg-blue-600">Add</button>
 
             </form>
 

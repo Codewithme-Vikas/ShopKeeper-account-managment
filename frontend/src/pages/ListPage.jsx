@@ -10,6 +10,7 @@ import UpdateProduct from '../components/product/UpdateProduct';
 import OrderList from '../components/order/OrderList';
 import OrderDetail from '../components/order/OrderDetail';
 
+import PaymentList from '../components/PaymentList';
 
 export default function ListPage() {
 
@@ -20,11 +21,12 @@ export default function ListPage() {
     return (
         <div className='mx-auto flex justify-center overflow-hidden'>
 
-            <div className='flex-[13%] pt-6 bg-slate-700 min-h-screen'>
+            <div className='flex-[13%] pt-6 bg-slate-200 min-h-screen'>
                 <ul className='flex flex-col gap-4  px-4'>
                     <Link to="/list/customer">Customer List</Link>
                     <Link to="/list/product" >Product List</Link>
                     <Link to="/list/order" >Order List</Link>
+                    <Link to="/list/payment" >Payment List</Link>
                 </ul>
             </div>
 
@@ -40,6 +42,10 @@ export default function ListPage() {
 
                 {
                     params.type === "customer" && <CustomerList />
+                }
+
+                {
+                    params.type === "payment" && <PaymentList />
                 }
 
                 {

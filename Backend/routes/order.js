@@ -4,8 +4,8 @@ const router = express.Router();
 
 
 // import controller
-const { createOrder, getAllBuyOrders, deleteOrder, getAllSellOrders, getCutomerAllOrders, getOrder }  = require("../controllers/Order");
-const { payment, customerCredit } = require("../controllers/Payment");
+const { createOrder, getAllBuyOrders, deleteOrder, getAllSellOrders, getCutomerAllOrders, getOrder, getAllOrders }  = require("../controllers/Order");
+const { payment, customerCredit, getAllPayments } = require("../controllers/Payment");
 
 
 // **********************************Order APIS************************************************
@@ -20,6 +20,9 @@ router.get("/getAllSellOrders" , getAllSellOrders );
 
 router.post("/getCutomerAllOrdres" , getCutomerAllOrders );
 
+
+router.get("/getAllOrders" , getAllOrders );
+
 // router.post("/delete" , deleteOrder );
 
 // -----------------------------------------------------------------------------------------
@@ -29,6 +32,8 @@ router.post("/getCutomerAllOrdres" , getCutomerAllOrders );
 router.post("/payment" , payment );
 
 router.post("/cutomerCredit" , customerCredit );
+
+router.get("/getAllPayments", getAllPayments)
 
 
 // -----------------------------------------------------------------------------------------

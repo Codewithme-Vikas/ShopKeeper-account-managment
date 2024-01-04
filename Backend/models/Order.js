@@ -29,6 +29,8 @@ const orderSchema = new mongoose.Schema({
         GST2 : { name : String , rate : Number },
     },
 
+    note : { type: String },
+
 },{
     timestamps : true,
 });

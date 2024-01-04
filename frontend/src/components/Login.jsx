@@ -3,7 +3,7 @@ import toast from "react-hot-toast";
 import { UserContext } from "../context/userContext";
 import {  Link, useNavigate } from "react-router-dom";
 
-export default function LoginPage() {
+export default function Login() {
 
     const { userInfo , setToken , setUserInfo } = useContext( UserContext );
     const navigate = useNavigate();
@@ -51,8 +51,39 @@ export default function LoginPage() {
     }
 
     return (
-        <>
-            
-        </>
+        <div className="mt-8 mx-auto">
+
+            <h1 className="text-2xl text-center ">Login, Please...</h1>
+
+            <form onSubmit={loginHandler} className="flex flex-col gap-4 mt-6 items-start border rounded p-4 py-8">
+
+                <div className="flex gap-2 items-center justify-center">
+                    <label htmlFor="name">Name</label>
+                    <input
+                        type="text"
+                        name="name"
+                        required
+                        value={name}
+                        onChange={e => setName(e.target.value)}
+                        className="text-black p-2 rounded outline-none"
+                    />
+                </div>
+
+                <div className="flex gap-2 items-center justify-center">
+                    <label htmlFor="password">Password</label>
+                    <input
+                        type="password"
+                        name="password"
+                        required
+                        value={password}
+                        onChange={e => setPassword(e.target.value)}
+                        className="text-black p-2 rounded outline-none"
+                    />
+                </div>
+
+                <Link to={"/reset-password"} className="text-blue-700 text-sm">Forget Password?</Link>
+                <button className="p-2 px-4 bg-red-600 text-white rounded-lg">Login</button>
+            </form>
+        </div>
     )
 }

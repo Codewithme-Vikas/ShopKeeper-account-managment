@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom"
 
 import { gstRates, gstTypes } from "../../data/GST.js";
 
-export default function CreateOrderForm({ totalPrice, finalPrice, optionCustomers, orderData, setOrderData, submitHandler }) {
+export default function CreateOrderForm({ invoiceNo,setInvoiceNo, totalPrice, finalPrice, optionCustomers, orderData, setOrderData, submitHandler }) {
 
     const navigate = useNavigate();
 
@@ -22,8 +22,9 @@ export default function CreateOrderForm({ totalPrice, finalPrice, optionCustomer
     return (
         <form onSubmit={submitHandler} className="flex flex-col  gap-12">
 
-
             <div className="flex items-center gap-3 flex-wrap">
+
+
 
                 {/* customer name  */}
                 <div className="flex flex-col w-full gap-1">
@@ -49,31 +50,32 @@ export default function CreateOrderForm({ totalPrice, finalPrice, optionCustomer
                 </div>
 
 
-                {/* invoice no */}
+                {/* invoice number and total price */}
                 <div className="flex gap-12 w-full">
 
-                    <div className="flex flex-col gap-1 w-full ">
-                        <label htmlFor="invoiceNo" className="after:content-['*'] after:ml-0.5 after:text-red-500">Invoice No.</label>
-                        <input
-                            type="text"
-                            name="invoiceNo"
-                            required
-                            value={orderData.invoiceNo}
-                            onChange={changeHandler}
-                            className="p-[6px] rounded text-black outline-none"
-                            placeholder="Enter invoice number"
-                        />
+                    {/* invoice no */}
+                    <div className="flex gap-12 w-full">
+
+                        <div className="flex flex-col gap-1 w-full ">
+                            <label htmlFor="invoiceNo" className="after:content-['*'] after:ml-0.5 after:text-red-500">Invoice No.</label>
+                            <input
+                                type="text"
+                                name="invoiceNo"
+                                required
+                                value={invoiceNo}
+                                onChange={ (e)=> setInvoiceNo(e.target.value)}
+                                className="p-[6px] rounded text-black outline-none"
+                                placeholder="Enter invoice number"
+                            />
+                        </div>
+
+
                     </div>
 
 
-                </div>
-
-
-                {/* total price and Enter order price */}
-                <div className="flex gap-12 w-full">
-
+                    {/* total price */}
                     <div className="flex flex-col w-full gap-1 italic">
-                        <label htmlFor="orderPrice">Total Price :</label>
+                        <label htmlFor="orderPrice">Order Price :</label>
                         <input
                             type="number"
                             name="orderPrice"
@@ -84,17 +86,36 @@ export default function CreateOrderForm({ totalPrice, finalPrice, optionCustomer
                     </div>
 
 
-                    <div className="flex flex-col w-full gap-1">
+                </div>
+
+
+
+                {/* total price and Enter order price */}
+                <div className="flex gap-12 w-full">
+
+                    {/* <div className="flex flex-col w-full gap-1 italic">
+                        <label htmlFor="orderPrice">Order Price :</label>
+                        <input
+                            type="number"
+                            name="orderPrice"
+                            value={totalPrice}
+                            readOnly
+                            className="p-[6px] rounded text-white outline-none bg-slate-600"
+                        />
+                    </div> */}
+
+
+                    {/* <div className="flex flex-col w-full gap-1">
                         <label htmlFor="enterPrice" className="after:content-['*'] after:ml-0.5 after:text-red-500">Enter Order Price</label>
                         <input
                             type="number"
                             name="enterPrice"
-                            value={orderData.enterPrice}
+                            value={  orderData.enterPrice}
                             onChange={changeHandler}
                             className="p-[6px] rounded text-black outline-none"
                             placeholder="Enter order price"
                         />
-                    </div>
+                    </div> */}
 
 
                 </div>
@@ -119,7 +140,7 @@ export default function CreateOrderForm({ totalPrice, finalPrice, optionCustomer
                         <input
                             type="number"
                             name="discountedPrice"
-                            value={orderData.enterPrice - orderData.discount}
+                            value={totalPrice - orderData.discount}
                             readOnly
                             className="p-[6px] rounded text-white bg-slate-600 outline-none"
                         />
@@ -273,6 +294,27 @@ export default function CreateOrderForm({ totalPrice, finalPrice, optionCustomer
 
                 </div>
 
+                {/* note or additional message */}
+                <div className="flex gap-12 w-full">
+
+                    <div className=" flex flex-col w-full gap-1">
+
+                        <label htmlFor="note">Note :</label>
+                        <textarea
+                            value={orderData.note}
+                            onChange={changeHandler}
+                            name="note"
+                            id="note"
+                            cols="30"
+                            rows="3"
+                            className="p-[6px] rounded text-black outline-none "
+                            placeholder="Enter any additional message..."
+                        >
+                        </textarea>
+                       
+                    </div>
+
+                </div>
 
 
             </div>
@@ -281,8 +323,8 @@ export default function CreateOrderForm({ totalPrice, finalPrice, optionCustomer
 
 
             <div className="flex gap-6">
-                <button className="bg-rose-800 p-2 px-6 rounded outline-none hover:bg-rose-700">Create</button>
-                <button type="button" onClick={() => navigate(-1)} className="bg-blue-800 p-2 px-6 rounded outline-none hover:bg-blue-700">Cancle</button>
+                <button className="bg-blue-700 text-white p-2 px-6 rounded outline-none hover:bg-blue-600">Create</button>
+                <button type="button" onClick={() => navigate(-1)} className="bg-rose-700 p-2 px-6 rounded outline-none hover:bg-rose-500 text-white">Cancle</button>
             </div>
 
 
