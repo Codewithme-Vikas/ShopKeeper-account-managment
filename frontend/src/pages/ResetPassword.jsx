@@ -6,7 +6,7 @@ export default function ResetPassword() {
 
     const navigate = useNavigate();
     const { id , token } = useParams();
-
+    console.log( id , token )
     const [ password , setPassword ] = useState("");
     const [ confirmPassword, setConfirmPassword] = useState("");
 
