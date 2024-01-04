@@ -7,23 +7,18 @@ import Board from "../assets/image/3dBoard.png"
 import backLight from "../assets/image/backLight.png"
 import billBook from "../assets/image/billBook.png"
 import canopy from "../assets/image/canopy.png"
-import digitMarketing from "../assets/image/digitMarketing.png"
 import hodingFlex from "../assets/image/hodingFlex.png"
-import oneWay from "../assets/image/oneWay.png"
 import standy from "../assets/image/standy.png"
 import stickers from "../assets/image/stickers.png"
 import tShirt from "../assets/image/tShirt.png"
 import pamplet from "../assets/image/pamplet.png"
 import laterHead from "../assets/image/laterHead.png"
-import garmentsTag from "../assets/image/garmentsTag.png"
 import envelopes from "../assets/image/envelopes.png"
 import visitingCard from "../assets/image/visitingCard.png"
-import wallPaper from "../assets/image/wallPaper.png"
 
-
-import canonPrinter from '../assets/canonPrinter.jpg'
-import ecoMachine from '../assets/ecoMachine.jpg'
-import flexMachine from '../assets/flexMachine.jpeg'
+import canonPrinter from '../assets/crouselmage/canonPrinter.jpg'
+import ecoMachine from '../assets/crouselmage/ecoMachine.jpg'
+import flexMachine from '../assets/crouselmage/flexMachine.jpeg'
 
 export default function LandingPage() {
 
